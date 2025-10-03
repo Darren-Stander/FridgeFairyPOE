@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "852356997069",
+    "project_id": "fridgefairy-4cd50",
+    "storage_bucket": "fridgefairy-4cd50.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852356997069:android:26121b4a0241e9a653ee84",
+        "android_client_info": {
+          "package_name": "com.fridgefairy.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852356997069-blo984o8esr15flg7t44bvb26fl1hr64.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxrUPOjLny2c-g6u9P5LFWgp0xVkYL93I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852356997069-blo984o8esr15flg7t44bvb26fl1hr64.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">FridgeFairy</string>
+    <string name="default_web_client_id">852356997069-blo984o8esr15flg7t44bvb26fl1hr64.apps.googleusercontent.com</string>
+
+    <string-array name="theme_options">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>System Default</item>
+    </string-array>
+
+    <string-array name="diet_options">
+        <item>None</item>
+        <item>Vegetarian</item>
+        <item>Vegan</item>
+        <item>Ketogenic</item>
+        <item>Paleo</item>
+    </string-array>
+</resources>

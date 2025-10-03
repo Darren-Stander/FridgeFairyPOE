@@ -1,0 +1,142 @@
+package com.fridgefairy.android.ui.activities
+
+import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.fridgefairy.android.BuildConfig
+import com.fridgefairy.android.data.FridgeFairyDatabase
+import com.fridgefairy.android.data.repository.FoodRepository
+import com.fridgefairy.android.data.repository.RecipeRepository
+import com.fridgefairy.android.databinding.ActivityRecipesByIngredientsBinding
+import com.fridgefairy.android.ui.adapters.RecipeAdapter
+import com.fridgefairy.android.ui.viewmodels.FridgeViewModel
+import com.fridgefairy.android.ui.viewmodels.FridgeViewModelFactory
+import com.fridgefairy.android.ui.viewmodels.RecipeViewModel
+import com.fridgefairy.android.ui.viewmodels.RecipeViewModelFactory
+import kotlinx.coroutines.launch
+
+class RecipesByIngredientsActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityRecipesByIngredientsBinding
+    private lateinit var recipeAdapter: RecipeAdapter
+
+    private val fridgeViewModel: FridgeViewModel by viewModels {
+        FridgeViewModelFactory(
+            FoodRepository(
+                FridgeFairyDatabase.getDatabase(this).foodDao()
+            )
+        )
+    }
+
+    private val recipeViewModel: RecipeViewModel by viewModels {
+        RecipeViewModelFactory(
+            RecipeRepository(
+                FridgeFairyDatabase.getDatabase(this).recipeDao()
+            )
+        )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityRecipesByIngredientsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Recipes from Your Fridge"
+
+        setupRecyclerView()
+        setupClickListeners()
+        observeViewModel()
+        loadFridgeIngredients()
+    }
+
+    private fun setupRecyclerView() {
+        recipeAdapter = RecipeAdapter()
+
+        binding.recyclerViewRecipes.apply {
+            layoutManager = LinearLayoutManager(this@RecipesByIngredientsActivity)
+            adapter = recipeAdapter
+        }
+    }
+
+    private fun loadFridgeIngredients() {
+        fridgeViewModel.allFoodItems.observe(this) { foodItems ->
+            if (foodItems.isEmpty()) {
+                binding.textIngredientsPreview.text = "No ingredients in your fridge. Add some items first!"
+                binding.buttonFindRecipes.isEnabled = false
+            } else {
+                val ingredientNames = foodItems.map { it.name }
+                binding.textIngredientsPreview.text = "Ingredients: ${ingredientNames.joinToString(", ")}"
+                binding.buttonFindRecipes.isEnabled = true
+            }
+        }
+    }
+
+    private fun setupClickListeners() {
+        binding.buttonFindRecipes.setOnClickListener {
+            lifecycleScope.launch {
+                showLoading(true)
+
+                val foodItems = fridgeViewModel.allFoodItems.value ?: emptyList()
+                val ingredientNames = foodItems.map { it.name }
+
+                if (ingredientNames.isEmpty()) {
+                    Toast.makeText(
+                        this@RecipesByIngredientsActivity,
+                        "No ingredients in your fridge",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    showLoading(false)
+                    return@launch
+                }
+
+                recipeViewModel.findRecipesByIngredients(
+                    ingredientNames,
+                    BuildConfig.SPOONACULAR_API_KEY
+                )
+            }
+        }
+    }
+
+    private fun observeViewModel() {
+        recipeViewModel.ingredientBasedRecipes.observe(this) { recipes ->
+            showLoading(false)
+
+            if (recipes != null && recipes.isNotEmpty()) {
+                binding.recyclerViewRecipes.visibility = View.VISIBLE
+                binding.textEmptyState.visibility = View.GONE
+                recipeAdapter.submitList(recipes)
+            } else {
+                binding.recyclerViewRecipes.visibility = View.GONE
+                binding.textEmptyState.visibility = View.VISIBLE
+                binding.textEmptyState.text = "No recipes found with your ingredients."
+            }
+        }
+
+        recipeViewModel.errorMessage.observe(this) { error ->
+            if (error != null) {
+                showLoading(false)
+                Toast.makeText(this, "Error: $error", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.buttonFindRecipes.isEnabled = !isLoading
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressedDispatcher.onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+}
