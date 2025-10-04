@@ -15,4 +15,14 @@
         <item>Ketogenic</item>
         <item>Paleo</item>
     </string-array>
+
+
+<string name="onboarding_title_short">FridgeFairy</string>
+<string name="onboarding_title">Cook from What You Have</string>
+<string name="onboarding_tagline">Turn leftovers into tasty, budget-friendly meals.</string>
+<string name="onboarding_about">
+        FridgeFairy suggests recipes based on the ingredients you already have.
+        Tell us what’s in your fridge or pantry and we’ll do the rest.
+    </string>
+<string name="onboarding_cta">Get Started</string>
 </resources>
