@@ -1,8 +1,10 @@
 package com.fridgefairy.android.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -75,6 +77,10 @@ class ShoppingListActivity : AppCompatActivity() {
                 .setNegativeButton("Cancel", null)
                 .show()
         }
+
+        binding.buttonOpenScanner.setOnClickListener {
+            startActivity(Intent(this, ReceiptScannerActivity::class.java))
+        }
     }
 
     private fun observeData() {
@@ -105,11 +111,13 @@ class ShoppingListActivity : AppCompatActivity() {
 
         AlertDialog.Builder(this)
             .setTitle(item.name)
-            .setMessage("""
+            .setMessage(
+                """
                 Quantity: ${item.quantity}
                 Category: ${item.category}
                 Status: $status
-            """.trimIndent())
+                """.trimIndent()
+            )
             .setPositiveButton("OK", null)
             .setNegativeButton("Delete") { _, _ ->
                 viewModel.delete(item)
@@ -127,20 +135,15 @@ class ShoppingListActivity : AppCompatActivity() {
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
+            ): Boolean = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 val item = adapter.currentList[position]
-
                 viewModel.delete(item)
 
                 Snackbar.make(binding.root, "${item.name} deleted", Snackbar.LENGTH_LONG)
-                    .setAction("UNDO") {
-                        viewModel.insert(item)
-                    }
+                    .setAction("UNDO") { viewModel.insert(item) }
                     .show()
             }
         })

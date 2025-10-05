@@ -36,13 +36,23 @@
             android:text="Clear Purchased Items"
             android:layout_gravity="end" />
 
+        <!-- Open Receipt Scanner -->
+
         <!-- Empty state text -->
+        <Button
+            android:id="@+id/buttonOpenScanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Scan Receipt" />
+
         <TextView
             android:id="@+id/textEmptyState"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Your shopping list is empty\nTap + to add items"
+            android:text="Your shopping list is empty\nTap + to add items and scan receipt"
             android:textSize="16sp"
             android:visibility="gone"
             tools:visibility="visible" />

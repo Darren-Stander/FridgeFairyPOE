@@ -2,7 +2,6 @@
 import java.util.Properties
 import java.io.FileInputStream
 
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -32,7 +31,6 @@ android {
 
         val apiKey = localProperties.getProperty("SPOONACULAR_API_KEY") ?: ""
         buildConfigField("String", "SPOONACULAR_API_KEY", "\"$apiKey\"")
-
     }
 
     buildTypes {
@@ -56,15 +54,17 @@ android {
 
     buildFeatures {
         viewBinding = true
-        buildConfig = true  // CRITICAL: This enables BuildConfig generation
+        buildConfig = true // CRITICAL: This enables BuildConfig generation
     }
 }
 
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.12.0") // upgrade
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0") // add
+
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
@@ -75,7 +75,7 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
 
-    // Retrofit & Gson for API calls
+    // Retrofit & Gson
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
@@ -89,11 +89,23 @@ dependencies {
     // Image Loading - Coil
     implementation("io.coil-kt:coil:2.6.0")
 
-    // Google Sign-In for SSO
+    // Google Sign-In
     implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+    // ===== CameraX + ML Kit =====
+    val cameraxVersion = "1.3.4"
+    implementation("androidx.camera:camera-core:$cameraxVersion")
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+
+    implementation("com.google.mlkit:text-recognition:16.0.0")
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+    // =============================
 
     // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
+
