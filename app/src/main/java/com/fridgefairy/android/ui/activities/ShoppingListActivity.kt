@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -43,6 +42,11 @@ class ShoppingListActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Shopping List"
 
+        // Handle toolbar back arrow click explicitly
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
         setupRecyclerView()
         setupClickListeners()
         observeData()
@@ -78,6 +82,7 @@ class ShoppingListActivity : AppCompatActivity() {
                 .show()
         }
 
+        // Open the receipt scanner (button is bottom-left in the layout)
         binding.buttonOpenScanner.setOnClickListener {
             startActivity(Intent(this, ReceiptScannerActivity::class.java))
         }
