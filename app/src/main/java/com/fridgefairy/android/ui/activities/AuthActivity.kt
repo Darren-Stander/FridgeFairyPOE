@@ -21,23 +21,17 @@ class AuthActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
-    private val googleSignInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-        try {
-            val account = task.getResult(ApiException::class.java)!!
-            firebaseAuthWithGoogle(account.idToken!!)
-        } catch (e: ApiException) {
-            Log.w("AuthActivity", "Google sign in failed", e)
-            Toast.makeText(this, "Google Sign In failed: ${e.message}", Toast.LENGTH_LONG).show()
+    private val googleSignInLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            try {
+                val account = task.getResult(ApiException::class.java)!!
+                firebaseAuthWithGoogle(account.idToken!!)
+            } catch (e: ApiException) {
+                Log.w("AuthActivity", "Google sign in failed", e)
+                Toast.makeText(this, "Google Sign In failed: ${e.message}", Toast.LENGTH_LONG).show()
+            }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (firebaseAuth.currentUser != null) {
-            navigateToMain()
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,61 +49,50 @@ class AuthActivity : AppCompatActivity() {
         setupListeners()
     }
 
-    private fun setupListeners() {
-        binding.buttonRegister.setOnClickListener {
-            registerUser()
-        }
-
-        binding.buttonLogin.setOnClickListener {
-            loginUser()
-        }
-
-        binding.buttonGoogleSignIn.setOnClickListener {
-            signInWithGoogle()
+    override fun onStart() {
+        super.onStart()
+        if (::firebaseAuth.isInitialized && firebaseAuth.currentUser != null) {
+            navigateToMain()
         }
     }
 
-    private fun registerUser() {
-        val email = binding.editTextEmail.text.toString()
-        val password = binding.editTextPassword.text.toString()
-
-        if (email.isNotBlank() && password.isNotBlank()) {
-            firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
-                        navigateToMain()
-                    } else {
-                        Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()
-                    }
-                }
-        } else {
-            Toast.makeText(this, "Email and password cannot be empty.", Toast.LENGTH_SHORT).show()
+    private fun setupListeners() = with(binding) {
+        // Go to the dedicated register screen
+        buttonRegister.setOnClickListener {
+            startActivity(Intent(this@AuthActivity, RegisterActivity::class.java))
         }
+        buttonLogin.setOnClickListener { loginUser() }
+        buttonGoogleSignIn.setOnClickListener { signInWithGoogle() }
     }
 
     private fun loginUser() {
-        val email = binding.editTextEmail.text.toString()
+        val email = binding.editTextEmail.text.toString().trim()
         val password = binding.editTextPassword.text.toString()
 
-        if (email.isNotBlank() && password.isNotBlank()) {
-            firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show()
-                        navigateToMain()
-                    } else {
-                        Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()
-                    }
-                }
-        } else {
+        if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Email and password cannot be empty.", Toast.LENGTH_SHORT).show()
+            return
         }
+
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show()
+                navigateToMain()
+            }
+            .addOnFailureListener { e ->
+                val msg = when (e) {
+                    is com.google.firebase.auth.FirebaseAuthInvalidUserException ->
+                        "No account found for this email. Try registering first."
+                    is com.google.firebase.auth.FirebaseAuthInvalidCredentialsException ->
+                        "Incorrect email or password."
+                    else -> e.message ?: "Login failed. Please try again."
+                }
+                Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+            }
     }
 
     private fun signInWithGoogle() {
-        val signInIntent = googleSignInClient.signInIntent
-        googleSignInLauncher.launch(signInIntent)
+        googleSignInLauncher.launch(googleSignInClient.signInIntent)
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {

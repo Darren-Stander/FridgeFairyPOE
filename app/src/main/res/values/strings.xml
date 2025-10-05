@@ -16,6 +16,8 @@
         <item>Paleo</item>
     </string-array>
 
+    <string name="back">Back</string>
+
 
 <string name="onboarding_title_short">FridgeFairy</string>
 <string name="onboarding_title">Cook from What You Have</string>
