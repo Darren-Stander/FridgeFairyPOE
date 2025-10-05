@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
         android:layout_margin="16dp"
-        android:text="Scan Receipt" />
+        android:text="Coming soon" />
 
     <!-- Add item FAB bottom-right -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton

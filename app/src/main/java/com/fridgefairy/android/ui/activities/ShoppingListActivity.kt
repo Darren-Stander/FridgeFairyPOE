@@ -82,10 +82,11 @@ class ShoppingListActivity : AppCompatActivity() {
                 .show()
         }
 
-        // Open the receipt scanner (button is bottom-left in the layout)
-        binding.buttonOpenScanner.setOnClickListener {
-            startActivity(Intent(this, ReceiptScannerActivity::class.java))
-        }
+        // need to comment this back in p3///////////////////////////////////////////////////////
+       // binding.buttonOpenScanner.setOnClickListener {
+         //   startActivity(Intent(this, ReceiptScannerActivity::class.java))
+        //}
+        /////////////////////////////////////////////////////////////////////////////////////////
     }
 
     private fun observeData() {

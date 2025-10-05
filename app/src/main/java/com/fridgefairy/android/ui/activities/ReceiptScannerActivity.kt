@@ -1,10 +1,13 @@
 package com.fridgefairy.android.ui.activities
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Size
+import android.widget.ImageButton
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
@@ -12,16 +15,17 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.fridgefairy.android.R
 import com.fridgefairy.android.databinding.ActivityReceiptScannerBinding
 import com.fridgefairy.android.ui.ml.BarcodeAnalyzer
 import com.fridgefairy.android.ui.ml.OcrAnalyzer
+import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-
 
 class ReceiptScannerActivity : AppCompatActivity() {
 
@@ -49,12 +53,27 @@ class ReceiptScannerActivity : AppCompatActivity() {
         binding = ActivityReceiptScannerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        // ---- Back handling: toolbar if present, else custom ImageButton ----
+        val toolbar = findViewById<MaterialToolbar?>(R.id.toolbar)
+        if (toolbar != null) {
+            setSupportActionBar(toolbar)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            toolbar.setNavigationOnClickListener { navigateToShoppingList() }
+        } else {
+            // If you replaced the toolbar with a header like in activity_register
+            findViewById<ImageButton?>(R.id.button_back)?.setOnClickListener {
+                navigateToShoppingList()
+            }
+        }
+
+        // System back -> go to Shopping List
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() = navigateToShoppingList()
+        })
 
         // Create PreviewView at runtime to avoid Layout Editor crashes
         previewView = PreviewView(this).apply {
-            layoutParams = androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams(
+            layoutParams = CoordinatorLayout.LayoutParams(
                 CoordinatorLayout.LayoutParams.MATCH_PARENT,
                 CoordinatorLayout.LayoutParams.MATCH_PARENT
             )
@@ -66,14 +85,26 @@ class ReceiptScannerActivity : AppCompatActivity() {
         binding.btnModeBarcode.setOnClickListener { switchMode(Mode.BARCODE) }
         binding.textMode.text = "Mode: OCR"
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            == PackageManager.PERMISSION_GRANTED
+        ) {
             startCamera()
         } else {
             requestCam.launch(Manifest.permission.CAMERA)
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean { finish(); return true }
+    override fun onSupportNavigateUp(): Boolean {
+        navigateToShoppingList()
+        return true
+    }
+
+    private fun navigateToShoppingList() {
+        startActivity(Intent(this, ShoppingListActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        })
+        finish()
+    }
 
     private fun switchMode(newMode: Mode) {
         if (mode == newMode) return
