@@ -27,6 +27,7 @@ class BarcodeAnalyzer(
     private val scanner = BarcodeScanning.getClient(options)
     private var isBusy = false
 
+    @androidx.annotation.OptIn(ExperimentalGetImage::class)
     @OptIn(ExperimentalGetImage::class)
     override fun analyze(imageProxy: ImageProxy) {
         if (isBusy) { imageProxy.close(); return }

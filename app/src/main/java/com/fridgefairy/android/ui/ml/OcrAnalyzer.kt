@@ -14,6 +14,7 @@ class OcrAnalyzer(
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
     private var isBusy = false
 
+    @androidx.annotation.OptIn(ExperimentalGetImage::class)
     @OptIn(ExperimentalGetImage::class)
     override fun analyze(imageProxy: ImageProxy) {
         if (isBusy) { imageProxy.close(); return }
