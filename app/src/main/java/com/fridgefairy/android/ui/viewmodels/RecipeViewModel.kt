@@ -39,7 +39,7 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
                 val recipes = repository.searchRecipes(query, apiKey, diet, intolerances)
 
                 if (recipes != null) {
-                    _searchResults.postValue(recipes)
+                    _searchResults.postValue(recipes!!)
                 } else {
                     _searchResults.postValue(emptyList())
                     _errorMessage.postValue("Failed to fetch recipes. Please check your connection.")
@@ -62,7 +62,7 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
                 val recipes = repository.findRecipesByIngredients(ingredients, apiKey)
 
                 if (recipes != null) {
-                    _ingredientBasedRecipes.postValue(recipes)
+                    _ingredientBasedRecipes.postValue(recipes!!)
                 } else {
                     _ingredientBasedRecipes.postValue(emptyList())
                     _errorMessage.postValue("Failed to fetch recipes. Please check your connection.")
