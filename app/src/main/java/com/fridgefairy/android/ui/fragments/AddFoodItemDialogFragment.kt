@@ -11,7 +11,6 @@ import java.util.Calendar
 
 class AddFoodItemDialogFragment : DialogFragment() {
 
-    // 1. REPLACED the listener interface and setter with a simple lambda property.
     var onFoodItemAdded: ((FoodItem) -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -36,14 +35,15 @@ class AddFoodItemDialogFragment : DialogFragment() {
                     calendar.add(Calendar.DAY_OF_YEAR, 7)
                     val expirationDate = calendar.timeInMillis
 
+                    // NOTE: userId will be set by MainActivity before inserting
                     val foodItem = FoodItem(
+                        userId = "", // Placeholder - will be replaced in MainActivity
                         name = name,
                         category = category,
                         expirationDate = expirationDate,
                         quantity = quantity
                     )
 
-                    // 2. UPDATED: Call the lambda directly using invoke().
                     onFoodItemAdded?.invoke(foodItem)
                 }
             }

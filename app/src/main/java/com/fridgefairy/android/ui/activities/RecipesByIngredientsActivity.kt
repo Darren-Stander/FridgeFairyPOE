@@ -1,5 +1,6 @@
 package com.fridgefairy.android.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -57,7 +58,13 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        recipeAdapter = RecipeAdapter()
+        // Pass a click listener to the adapter
+        recipeAdapter = RecipeAdapter { recipe ->
+            // Launch RecipeDetailActivity with the recipe ID
+            val intent = Intent(this, RecipeDetailActivity::class.java)
+            intent.putExtra("RECIPE_ID", recipe.id)
+            startActivity(intent)
+        }
 
         binding.recyclerViewRecipes.apply {
             layoutManager = LinearLayoutManager(this@RecipesByIngredientsActivity)
@@ -68,11 +75,13 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
     private fun loadFridgeIngredients() {
         fridgeViewModel.allFoodItems.observe(this) { foodItems ->
             if (foodItems.isEmpty()) {
-                binding.textIngredientsPreview.text = "No ingredients in your fridge. Add some items first!"
+                binding.textIngredientsPreview.text =
+                    "No ingredients in your fridge. Add some items first!"
                 binding.buttonFindRecipes.isEnabled = false
             } else {
                 val ingredientNames = foodItems.map { it.name }
-                binding.textIngredientsPreview.text = "Ingredients: ${ingredientNames.joinToString(", ")}"
+                binding.textIngredientsPreview.text =
+                    "Ingredients: ${ingredientNames.joinToString(", ")}"
                 binding.buttonFindRecipes.isEnabled = true
             }
         }

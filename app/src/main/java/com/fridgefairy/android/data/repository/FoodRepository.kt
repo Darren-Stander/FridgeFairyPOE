@@ -3,17 +3,23 @@ package com.fridgefairy.android.data.repository
 import androidx.lifecycle.LiveData
 import com.fridgefairy.android.data.dao.FoodDao
 import com.fridgefairy.android.data.entities.FoodItem
+import com.google.firebase.auth.FirebaseAuth
 
 class FoodRepository(private val foodDao: FoodDao) {
 
-    val allFoodItems: LiveData<List<FoodItem>> = foodDao.getAllFoodItems()
+    private val currentUserId: String
+        get() = FirebaseAuth.getInstance().currentUser?.uid ?: "unknown_user"
+
+    fun getAllFoodItems(): LiveData<List<FoodItem>> {
+        return foodDao.getAllFoodItems(currentUserId)
+    }
 
     suspend fun insert(foodItem: FoodItem) {
-        foodDao.insert(foodItem)
+        foodDao.insert(foodItem.copy(userId = currentUserId))
     }
 
     suspend fun update(foodItem: FoodItem) {
-        foodDao.update(foodItem)
+        foodDao.update(foodItem.copy(userId = currentUserId))
     }
 
     suspend fun delete(foodItem: FoodItem) {
@@ -21,11 +27,12 @@ class FoodRepository(private val foodDao: FoodDao) {
     }
 
     suspend fun getExpiringSoon(): List<FoodItem> {
-        val threeDaysFromNow = System.currentTimeMillis() + (3L * 24L * 60L * 60L * 1000L)
-        return foodDao.getFoodItemsExpiringBetween(System.currentTimeMillis(), threeDaysFromNow)
+        val now = System.currentTimeMillis()
+        val threeDaysFromNow = now + (3L * 24L * 60L * 60L * 1000L)
+        return foodDao.getFoodItemsExpiringBetween(currentUserId, now, threeDaysFromNow)
     }
 
     suspend fun getExpired(): List<FoodItem> {
-        return foodDao.getExpiredFoodItems(System.currentTimeMillis())
+        return foodDao.getExpiredFoodItems(currentUserId, System.currentTimeMillis())
     }
 }

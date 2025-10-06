@@ -11,6 +11,13 @@ import kotlinx.coroutines.launch
 
 class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
 
+    private val _userId = MutableLiveData<String>()
+    val userId: LiveData<String> get() = _userId
+
+    fun setUserId(id: String) {
+        _userId.value = id
+    }
+
     val allRecipes: LiveData<List<Recipe>> = repository.allRecipes
 
     private val _searchResults = MutableLiveData<List<Recipe>>()

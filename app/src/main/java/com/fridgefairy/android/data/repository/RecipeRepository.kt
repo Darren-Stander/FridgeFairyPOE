@@ -7,14 +7,22 @@ import com.fridgefairy.android.data.entities.Recipe
 import com.fridgefairy.android.data.entities.Ingredient
 import com.fridgefairy.android.data.api.RecipeApiService
 import com.fridgefairy.android.data.api.RetrofitClient
+import com.google.firebase.auth.FirebaseAuth
 
 class RecipeRepository(private val recipeDao: RecipeDao) {
 
-    val allRecipes: LiveData<List<Recipe>> = recipeDao.getAllRecipes()
     private val recipeApiService: RecipeApiService = RetrofitClient.recipeApiService
 
+    // 👇 ADD THIS PROPERTY TO FETCH CURRENT USER ID
+    private val currentUserId: String
+        get() = FirebaseAuth.getInstance().currentUser?.uid ?: "unknown_user"
+
+    // Fetch all recipes for this user (you can modify DAO if you want per-user filtering)
+    val allRecipes: LiveData<List<Recipe>> = recipeDao.getAllRecipes()
+
     suspend fun insert(recipe: Recipe) {
-        recipeDao.insert(recipe)
+        // Always attach current user ID before inserting
+        recipeDao.insert(recipe.copy(userId = currentUserId))
     }
 
     suspend fun searchRecipes(
@@ -52,6 +60,7 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
 
                             val recipe = Recipe(
                                 id = detail.id,
+                                userId = currentUserId, // 👈 ADDED HERE
                                 title = detail.title,
                                 image = detail.image,
                                 readyInMinutes = detail.readyInMinutes,
@@ -107,6 +116,7 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
 
                             val recipe = Recipe(
                                 id = detail.id,
+                                userId = currentUserId, // 👈 ADDED HERE TOO
                                 title = detail.title,
                                 image = detail.image,
                                 readyInMinutes = detail.readyInMinutes,

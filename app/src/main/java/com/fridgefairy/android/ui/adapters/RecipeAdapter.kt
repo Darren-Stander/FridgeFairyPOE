@@ -1,6 +1,5 @@
 package com.fridgefairy.android.ui.adapters
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.fridgefairy.android.R
 import com.fridgefairy.android.data.entities.Recipe
-import com.fridgefairy.android.ui.activities.RecipeDetailActivity
 
-class RecipeAdapter : ListAdapter<Recipe, RecipeAdapter.RecipeViewHolder>(DiffCallback) {
+class RecipeAdapter(
+    private val onItemClick: (Recipe) -> Unit
+) : ListAdapter<Recipe, RecipeAdapter.RecipeViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_recipe, parent, false)
-        return RecipeViewHolder(view)
+        return RecipeViewHolder(view, onItemClick)
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
@@ -27,10 +27,15 @@ class RecipeAdapter : ListAdapter<Recipe, RecipeAdapter.RecipeViewHolder>(DiffCa
         holder.bind(recipe)
     }
 
-    class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class RecipeViewHolder(
+        itemView: View,
+        private val onItemClick: (Recipe) -> Unit
+    ) : RecyclerView.ViewHolder(itemView) {
+
         private val titleTextView: TextView = itemView.findViewById(R.id.text_recipe_title)
         private val servingsTextView: TextView = itemView.findViewById(R.id.text_recipe_servings)
-        private val readyInMinutesTextView: TextView = itemView.findViewById(R.id.text_recipe_ready_in_minutes)
+        private val readyInMinutesTextView: TextView =
+            itemView.findViewById(R.id.text_recipe_ready_in_minutes)
         private val recipeImageView: ImageView = itemView.findViewById(R.id.image_recipe)
 
         fun bind(recipe: Recipe) {
@@ -45,11 +50,8 @@ class RecipeAdapter : ListAdapter<Recipe, RecipeAdapter.RecipeViewHolder>(DiffCa
                 }
             } ?: recipeImageView.setImageResource(R.drawable.ic_launcher_background)
 
-            // Launch detail activity on click
             itemView.setOnClickListener {
-                val intent = Intent(itemView.context, RecipeDetailActivity::class.java)
-                intent.putExtra("RECIPE_ID", recipe.id)
-                itemView.context.startActivity(intent)
+                onItemClick(recipe)
             }
         }
     }

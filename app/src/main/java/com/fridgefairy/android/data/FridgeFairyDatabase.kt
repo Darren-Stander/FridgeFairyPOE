@@ -14,7 +14,7 @@ import com.fridgefairy.android.data.dao.ShoppingListDao
 
 @Database(
     entities = [FoodItem::class, Recipe::class, ShoppingListItem::class],
-    version = 2,  // INCREMENTED VERSION
+    version = 3,  // INCREMENTED VERSION
     exportSchema = false
 )
 @TypeConverters(Converters::class)

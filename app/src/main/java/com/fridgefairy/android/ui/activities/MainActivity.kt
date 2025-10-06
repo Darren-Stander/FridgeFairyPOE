@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: FoodItemAdapter
     private lateinit var auth: FirebaseAuth
+    private var currentUserId: String? = null
 
     private val viewModel: FridgeViewModel by viewModels {
         FridgeViewModelFactory(
@@ -45,11 +46,17 @@ class MainActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        if (auth.currentUser == null) {
+        // Check if user is logged in
+        val currentUser = auth.currentUser
+        if (currentUser == null) {
             startActivity(Intent(this, AuthActivity::class.java))
             finish()
             return
         }
+
+        // Set the current user ID
+        currentUserId = currentUser.uid
+        viewModel.setUserId(currentUserId!!)
 
         setupRecyclerView()
         setupClickListeners()
@@ -90,8 +97,14 @@ class MainActivity : AppCompatActivity() {
     private fun showAddFoodItemDialog() {
         val dialog = AddFoodItemDialogFragment().apply {
             onFoodItemAdded = { foodItem ->
-                viewModel.insert(foodItem)
-                Snackbar.make(binding.root, "${foodItem.name} added to fridge", Snackbar.LENGTH_SHORT).show()
+                // Add userId to the food item
+                val foodItemWithUser = foodItem.copy(userId = currentUserId!!)
+                viewModel.insert(foodItemWithUser)
+                Snackbar.make(
+                    binding.root,
+                    "${foodItem.name} added to fridge",
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
         }
         dialog.show(supportFragmentManager, "AddFoodItemDialog")
@@ -107,23 +120,31 @@ class MainActivity : AppCompatActivity() {
 
         AlertDialog.Builder(this)
             .setTitle(foodItem.name)
-            .setMessage("""
+            .setMessage(
+                """
                 Category: ${foodItem.category}
                 Quantity: ${foodItem.quantity}
                 Storage: ${foodItem.storageLocation}
                 Status: $expiryStatus
-            """.trimIndent())
+            """.trimIndent()
+            )
             .setPositiveButton("OK", null)
             .setNegativeButton("Delete") { _, _ ->
                 viewModel.delete(foodItem)
-                Snackbar.make(binding.root, "${foodItem.name} deleted", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, "${foodItem.name} deleted", Snackbar.LENGTH_SHORT)
+                    .show()
             }
             .show()
     }
 
     private fun setupSwipeToDelete() {
-        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+        val itemTouchHelper = ItemTouchHelper(object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
                 return false
             }
 
@@ -155,24 +176,29 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, SettingsActivity::class.java))
                 true
             }
+
             R.id.action_recipe_search -> {
                 startActivity(Intent(this, RecipeSearchActivity::class.java))
                 true
             }
+
             R.id.action_find_recipes_by_ingredients -> {
                 startActivity(Intent(this, RecipesByIngredientsActivity::class.java))
                 true
             }
+
             R.id.action_shopping_list -> {
                 startActivity(Intent(this, ShoppingListActivity::class.java))
                 true
             }
+
             R.id.action_logout -> {
                 auth.signOut()
                 startActivity(Intent(this, AuthActivity::class.java))
                 finish()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

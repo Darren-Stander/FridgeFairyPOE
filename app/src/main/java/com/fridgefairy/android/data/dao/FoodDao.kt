@@ -15,15 +15,13 @@ interface FoodDao {
     @Delete
     suspend fun delete(foodItem: FoodItem)
 
-    @Query("SELECT * FROM food_items ORDER BY expirationDate ASC")
-    fun getAllFoodItems(): LiveData<List<FoodItem>>
+    @Query("SELECT * FROM food_items WHERE userId = :userId ORDER BY expirationDate ASC")
+    fun getAllFoodItems(userId: String): LiveData<List<FoodItem>>
 
-    @Query("SELECT * FROM food_items WHERE expirationDate < :timestamp")
-    suspend fun getExpiredFoodItems(timestamp: Long): List<FoodItem>
+    @Query("SELECT * FROM food_items WHERE userId = :userId AND expirationDate < :timestamp")
+    suspend fun getExpiredFoodItems(userId: String, timestamp: Long): List<FoodItem>
 
-    @Query("SELECT * FROM food_items WHERE id = :id")
-    suspend fun getFoodItemById(id: String): FoodItem?
-
-    @Query("SELECT * FROM food_items WHERE expirationDate BETWEEN :start AND :end")
-    suspend fun getFoodItemsExpiringBetween(start: Long, end: Long): List<FoodItem>
+    @Query("SELECT * FROM food_items WHERE userId = :userId AND expirationDate BETWEEN :start AND :end")
+    suspend fun getFoodItemsExpiringBetween(userId: String, start: Long, end: Long): List<FoodItem>
 }
+

@@ -1,6 +1,5 @@
 package com.fridgefairy.android.ui.activities
 
-import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -15,11 +14,14 @@ import com.fridgefairy.android.databinding.ActivityRecipeSearchBinding
 import com.fridgefairy.android.ui.adapters.RecipeAdapter
 import com.fridgefairy.android.ui.viewmodels.RecipeViewModel
 import com.fridgefairy.android.ui.viewmodels.RecipeViewModelFactory
+import com.google.firebase.auth.FirebaseAuth
 
 class RecipeSearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRecipeSearchBinding
     private lateinit var recipeAdapter: RecipeAdapter
+    private lateinit var auth: FirebaseAuth
+    private var currentUserId: String? = null
 
     private val recipeViewModel: RecipeViewModel by viewModels {
         RecipeViewModelFactory(
@@ -38,13 +40,26 @@ class RecipeSearchActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Recipe Search"
 
+        auth = FirebaseAuth.getInstance()
+        currentUserId = auth.currentUser?.uid
+
+        if (currentUserId == null) {
+            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+
+        recipeViewModel.setUserId(currentUserId!!)
+
         setupRecyclerView()
         setupSearchListener()
         observeViewModel()
     }
 
     private fun setupRecyclerView() {
-        recipeAdapter = RecipeAdapter()
+        recipeAdapter = RecipeAdapter { recipe ->
+            Toast.makeText(this, "Clicked: ${recipe.title}", Toast.LENGTH_SHORT).show()
+        }
 
         binding.recyclerViewRecipes.apply {
             layoutManager = LinearLayoutManager(this@RecipeSearchActivity)
@@ -58,39 +73,11 @@ class RecipeSearchActivity : AppCompatActivity() {
 
             if (query.isNotBlank()) {
                 showLoading(true)
-
-                // Get dietary preferences from settings
-                val diet = getDietPreference()
-                val intolerances = getIntolerances()
-
-                recipeViewModel.searchRecipes(
-                    query,
-                    BuildConfig.SPOONACULAR_API_KEY,
-                    diet,
-                    intolerances
-                )
+                recipeViewModel.searchRecipes(currentUserId!!, query, BuildConfig.SPOONACULAR_API_KEY)
             } else {
                 Toast.makeText(this, "Please enter a search query", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    private fun getDietPreference(): String? {
-        val prefs = getSharedPreferences("FridgeFairyPrefs", Context.MODE_PRIVATE)
-        val dietIndex = prefs.getInt("diet_preference", 0)
-        return when (dietIndex) {
-            1 -> "vegetarian"
-            2 -> "vegan"
-            3 -> "ketogenic"
-            4 -> "paleo"
-            else -> null
-        }
-    }
-
-    private fun getIntolerances(): String? {
-        val prefs = getSharedPreferences("FridgeFairyPrefs", Context.MODE_PRIVATE)
-        val intolerances = prefs.getString("intolerances", "")
-        return if (intolerances.isNullOrBlank()) null else intolerances
     }
 
     private fun observeViewModel() {

@@ -1,13 +1,17 @@
-// File: com/fridgefairy/android/data/entities/Recipe.kt
 package com.fridgefairy.android.data.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.Index
 
-@Entity(tableName = "recipes")
+@Entity(
+    tableName = "recipes",
+    indices = [Index(value = ["userId"])]
+)
 data class Recipe(
     @PrimaryKey
     val id: Int,
+    val userId: String, // Associate with Firebase user ID
     val title: String,
     val image: String?,
     val readyInMinutes: Int,
@@ -15,7 +19,6 @@ data class Recipe(
     val sourceUrl: String?,
     val summary: String,
     val instructions: String = "",
-    // Added this field to store ingredients
     val ingredients: List<Ingredient> = emptyList()
 )
 

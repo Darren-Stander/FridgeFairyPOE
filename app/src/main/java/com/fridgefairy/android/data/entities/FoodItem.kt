@@ -8,12 +8,14 @@ import java.util.UUID
 data class FoodItem(
     @PrimaryKey
     val id: String = UUID.randomUUID().toString(),
+    val userId: String, // NEW: Associate with Firebase user
     val name: String,
     val category: String,
     val expirationDate: Long,
     val quantity: Int,
     val storageLocation: String = "Fridge",
     val addedDate: Long = System.currentTimeMillis()
+
 ) {
     val daysUntilExpiration: Long
         get() = (expirationDate - System.currentTimeMillis()) / (1000L * 60L * 60L * 24L)
