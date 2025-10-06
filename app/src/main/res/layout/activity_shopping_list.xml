@@ -9,61 +9,52 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.FridgeFairy.AppBarOverlay">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
             app:navigationIcon="?attr/homeAsUpIndicator"
             app:popupTheme="@style/Theme.FridgeFairy.PopupOverlay" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:padding="16dp">
 
         <!-- Clear purchased items button -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonClearPurchased"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             android:layout_gravity="end"
-            android:text="Clear Purchased Items" />
+            android:text="Clear Purchased Items"
+            android:layout_marginBottom="8dp" />
 
         <!-- Empty state text -->
         <TextView
             android:id="@+id/textEmptyState"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Your shopping list is empty\nTap + to add items and scan receipt"
             android:textSize="16sp"
             android:visibility="gone"
+            android:padding="32dp"
             tools:visibility="visible" />
 
         <!-- Shopping list items -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewShoppingList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             tools:listitem="@layout/item_shopping_list" />
     </LinearLayout>
-
-    <!-- NEW: Scan Receipt bottom-left (inline with FAB) -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonOpenScanner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_margin="16dp"
-        android:text="Coming soon" />
 
     <!-- Add item FAB bottom-right -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -75,4 +66,12 @@
         android:src="@android:drawable/ic_input_add"
         app:tint="@android:color/white" />
 
+    <!-- Scan receipt button bottom-left -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonOpenScanner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp"
+        android:text="Scan Receipt" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

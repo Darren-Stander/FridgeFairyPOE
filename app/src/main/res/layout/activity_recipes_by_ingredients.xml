@@ -8,14 +8,12 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.FridgeFairy.AppBarOverlay">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
             app:popupTheme="@style/Theme.FridgeFairy.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -23,6 +21,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -35,22 +34,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Find recipes using ingredients from your fridge"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginBottom="12dp"/>
 
             <TextView
                 android:id="@+id/text_ingredients_preview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Loading ingredients..."
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:layout_marginBottom="16dp"
                 android:padding="12dp"
-                android:background="@color/teal_200"
-                android:textColor="@color/black"/>
+                android:layout_marginTop="8dp"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_find_recipes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,7 +69,6 @@
                 android:text="Click 'Find Recipes' to discover what you can make"
                 android:textAlignment="center"
                 android:textSize="16sp"
-                android:textColor="@android:color/darker_gray"
                 android:padding="32dp"
                 android:visibility="gone"
                 tools:visibility="visible"/>
@@ -80,7 +76,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewRecipes"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/item_recipe" />
 

@@ -8,21 +8,19 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.FridgeFairy.AppBarOverlay">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
             app:popupTheme="@style/Theme.FridgeFairy.PopupOverlay" />
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -47,7 +45,7 @@
                     android:imeOptions="actionSearch" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_search_recipes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,7 +67,6 @@
                 android:text="Search for recipes to get started"
                 android:textAlignment="center"
                 android:textSize="16sp"
-                android:textColor="@android:color/darker_gray"
                 android:padding="32dp"
                 android:visibility="gone"
                 tools:visibility="visible"/>
@@ -77,7 +74,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewRecipes"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/item_recipe" />
 
