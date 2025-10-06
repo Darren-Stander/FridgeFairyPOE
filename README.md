@@ -4,7 +4,7 @@
 A mobile budgeting application designed to help users reach financial goals, track expenditure, and make informed financial decisions through an interactive, gamified experience.
 
 ## Team Members
-- Tayyib Dawood (ST10132915)
+- Tayyib Dawood (ST10132915) Leader
 - Darren Jade Stander (ST10209886)
 
 ## Features
