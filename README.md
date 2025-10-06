@@ -101,6 +101,28 @@ This project includes automated tests to ensure core functionality works as expe
 ### Claude sonnet 4.5
 
 *    https://claude.ai/share/faf79f4a-662c-4604-85c4-5b183a067e1c
+  
+*    https://claude.ai/share/640f1606-6172-4c18-892e-f957e440c88f
+  
+*    https://claude.ai/share/d42f5b8f-4dc9-4c78-8a67-825686779ab4
+
+### ChatGPT 5
+
+* https://chatgpt.com/share/68e42724-4cc8-8012-a3dc-c90c740c48a9
+  
+* https://chatgpt.com/share/68e42823-08dc-8012-80cc-e403d8a5913d
+
+
+ ### YT Videos 
+
+ *  https://www.youtube.com/watch?v=M3gYcPF51QY
+   
+ *  https://www.youtube.com/watch?v=lwAvI3WDXBY&list=PLSrm9z4zp4mEPOfZNV9O-crOhoMa0G2-o
+   
+ *  https://www.youtube.com/watch?v=3USvr1Lz8g8&list=PLSrm9z4zp4mEPOfZNV9O-crOhoMa0G2-o&index=3
+   
+ *  https://www.youtube.com/watch?v=rn53Roy-HgE&list=PLSrm9z4zp4mEPOfZNV9O-crOhoMa0G2-o&index=8
+   
 
 ## AI Write up
 
