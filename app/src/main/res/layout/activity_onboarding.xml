@@ -37,12 +37,12 @@
 
             <ImageView
                 android:id="@+id/imgLogo"
-                android:layout_width="96dp"
-                android:layout_height="96dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_fridge_placeholder"
                 android:layout_marginBottom="24dp"
-                app:tint="?attr/colorOnSurface" />
+                android:src="@mipmap/ic_launcher"
+                android:background="@drawable/ic_launcher_border" />
 
             <TextView
                 android:id="@+id/txtTitle"
@@ -51,6 +51,7 @@
                 android:layout_gravity="center_horizontal"
                 android:text="Welcome to FridgeFairy"
                 android:textAppearance="?attr/textAppearanceHeadline5"
+                android:textStyle="bold"
                 android:layout_marginBottom="16dp" />
 
             <TextView
