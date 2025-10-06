@@ -4,19 +4,22 @@
 A mobile budgeting application designed to help users reach financial goals, track expenditure, and make informed financial decisions through an interactive, gamified experience.
 
 ## Team Members
-
+- Tayyib Dawood (ST10132915)
 - Darren Jade Stander (ST10209886)
 
 ## Features
 
-
 *	**User Authentication:** Email/Password and Google Sign-In via Firebase Auth.
+*	**Modern Architecture:** MVVM with ViewModels & LiveData/Flow, Room, Retrofit, Navigation, and ViewBinding.
+*	**Material UI & UX:** CoordinatorLayout + Toolbar (back arrow), Floating Action Button, Snackbars for feedback, and RecyclerView lists.
+
+## Custom Features
 *	**Pantry/Inventory Management:** Add, edit, and delete food items; optional categories/notes; stored locally.
 *	**Recipe Search & Details:** Spoonacular API integration with Retrofit/OkHttp; view recipe info and images (Coil).
 *	**Shopping List:** Add items, mark as purchased, swipe-to-delete with UNDO, and “Clear Purchased” in one tap.
+
+## Advanced Features
 *	**Offline Data Persistence:** All core data (pantry, shopping list, meal plan) stored locally using Room.
-*	**Modern Architecture:** MVVM with ViewModels & LiveData/Flow, Room, Retrofit, Navigation, and ViewBinding.
-*	**Material UI & UX:** CoordinatorLayout + Toolbar (back arrow), Floating Action Button, Snackbars for feedback, and RecyclerView lists.
 
 ## Getting Started
 
@@ -53,6 +56,8 @@ This project includes automated tests to ensure core functionality works as expe
 *   **Language:** Kotlin
 *   **IDE:** Android Studio
 *   **CI/CD:** GitHub Actions
+   <img width="1762" height="601" alt="Screenshot 2025-10-06 090803" src="https://github.com/user-attachments/assets/6a17ab44-00b1-4ca1-8fff-50d7f9cc40bd" />
+
 
 ## References
-Darren (st10209886)
+Darren Stander (st10209886)
