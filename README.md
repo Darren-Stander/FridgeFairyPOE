@@ -9,6 +9,7 @@ A mobile budgeting application designed to help users reach financial goals, tra
 
 ## Features
 
+
 *	**User Authentication:** Email/Password and Google Sign-In via Firebase Auth.
 *	**Pantry/Inventory Management:** Add, edit, and delete food items; optional categories/notes; stored locally.
 *	**Recipe Search & Details:** Spoonacular API integration with Retrofit/OkHttp; view recipe info and images (Coil).
