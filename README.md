@@ -5,6 +5,9 @@
 
 A mobile budgeting application designed to help users reach financial goals, track expenditure, and make informed financial decisions through an interactive, gamified experience.
 
+## Link to YouTube Video
+https://youtu.be/G3L8bU_WCc8
+
 ## Purpose of the App
 
 *    FridgeFairy is an Android app that helps people reduce food waste and plan meals by turning the contents of their fridge/pantry into actionable decisions:
