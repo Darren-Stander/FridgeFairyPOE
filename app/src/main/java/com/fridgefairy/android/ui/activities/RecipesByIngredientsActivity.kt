@@ -1,3 +1,6 @@
+// Start of file: RecipesByIngredientsActivity.kt
+// This activity allows users to find recipes based on ingredients available in their fridge.
+// It uses FridgeViewModel to get fridge items and RecipeViewModel to fetch recipes.
 package com.fridgefairy.android.ui.activities
 
 import android.content.Intent
@@ -26,6 +29,7 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecipesByIngredientsBinding
     private lateinit var recipeAdapter: RecipeAdapter
 
+    // ViewModel for fridge items
     private val fridgeViewModel: FridgeViewModel by viewModels {
         FridgeViewModelFactory(
             FoodRepository(
@@ -34,6 +38,7 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
         )
     }
 
+    // ViewModel for recipes
     private val recipeViewModel: RecipeViewModel by viewModels {
         RecipeViewModelFactory(
             RecipeRepository(
@@ -47,6 +52,7 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
         binding = ActivityRecipesByIngredientsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Set up toolbar
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Recipes from Your Fridge"
@@ -57,6 +63,7 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
         loadFridgeIngredients()
     }
 
+    // Set up RecyclerView for recipes
     private fun setupRecyclerView() {
         // Pass a click listener to the adapter
         recipeAdapter = RecipeAdapter { recipe ->
@@ -72,6 +79,7 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
         }
     }
 
+    // Load ingredients from fridge and update UI
     private fun loadFridgeIngredients() {
         fridgeViewModel.allFoodItems.observe(this) { foodItems ->
             if (foodItems.isEmpty()) {
@@ -87,6 +95,7 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
         }
     }
 
+    // Set up click listeners for buttons
     private fun setupClickListeners() {
         binding.buttonFindRecipes.setOnClickListener {
             lifecycleScope.launch {
@@ -105,6 +114,7 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
                     return@launch
                 }
 
+                // Find recipes by ingredients using RecipeViewModel
                 recipeViewModel.findRecipesByIngredients(
                     ingredientNames,
                     BuildConfig.SPOONACULAR_API_KEY
@@ -113,6 +123,7 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
         }
     }
 
+    // Observe ViewModel data and update UI accordingly
     private fun observeViewModel() {
         recipeViewModel.ingredientBasedRecipes.observe(this) { recipes ->
             showLoading(false)
@@ -136,11 +147,13 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
         }
     }
 
+    // Show or hide loading indicator
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         binding.buttonFindRecipes.isEnabled = !isLoading
     }
 
+    // Handle toolbar back button
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             onBackPressedDispatcher.onBackPressed()
@@ -149,3 +162,4 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
+// End of file: RecipesByIngredientsActivity.kt

@@ -1,3 +1,6 @@
+// Start of file: AddFoodItemDialogFragment.kt
+// This fragment displays a dialog for adding a new food item to the fridge.
+// It collects user input and passes the new FoodItem to the parent activity via a callback.
 package com.fridgefairy.android.ui.fragments
 
 import android.app.AlertDialog
@@ -11,6 +14,7 @@ import java.util.Calendar
 
 class AddFoodItemDialogFragment : DialogFragment() {
 
+    // Callback for when a food item is added
     var onFoodItemAdded: ((FoodItem) -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -54,3 +58,4 @@ class AddFoodItemDialogFragment : DialogFragment() {
         return builder.create()
     }
 }
+// End of file: AddFoodItemDialogFragment.kt

@@ -1,3 +1,6 @@
+// Start of file: RegisterActivity.kt
+// This activity allows the user to register a new account using email and password.
+// It validates input, creates a new user with FirebaseAuth, and navigates to the main screen on success.
 package com.fridgefairy.android.ui.activities
 
 import android.content.Intent
@@ -19,14 +22,18 @@ class RegisterActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
+        // Back button to return to previous screen
         binding.buttonBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
 
+        // Create account button
         binding.buttonCreateAccount.setOnClickListener { doRegister() }
+        // Link to login screen
         binding.textGoToLogin.setOnClickListener { finish() } // back to login
     }
 
+    // Handles registration logic and input validation
     private fun doRegister() {
         val email = binding.editTextEmail.text.toString().trim()
         val password = binding.editTextPassword.text.toString()
@@ -68,6 +75,8 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
 
+    // Shows a toast message
     private fun toast(msg: String) =
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
+// End of file: RegisterActivity.kt

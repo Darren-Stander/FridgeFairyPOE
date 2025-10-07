@@ -1,3 +1,6 @@
+// Start of file: RecipeDetailActivity.kt
+// This activity displays detailed information about a selected recipe.
+// It loads recipe details from the database and updates the UI accordingly.
 package com.fridgefairy.android.ui.activities
 
 import android.os.Bundle
@@ -20,6 +23,7 @@ class RecipeDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecipeDetailBinding
     private var recipeId: Int = -1
 
+    // ViewModel for recipe data
     private val recipeViewModel: RecipeViewModel by viewModels {
         RecipeViewModelFactory(
             RecipeRepository(
@@ -33,10 +37,12 @@ class RecipeDetailActivity : AppCompatActivity() {
         binding = ActivityRecipeDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Set up toolbar
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Recipe Details"
 
+        // Get recipe ID from intent
         recipeId = intent.getIntExtra("RECIPE_ID", -1)
 
         if (recipeId == -1) {
@@ -48,6 +54,7 @@ class RecipeDetailActivity : AppCompatActivity() {
         loadRecipeDetails()
     }
 
+    // Loads recipe details and updates UI
     private fun loadRecipeDetails() {
         lifecycleScope.launch {
             val recipe = recipeViewModel.getRecipeById(recipeId)
@@ -105,6 +112,7 @@ class RecipeDetailActivity : AppCompatActivity() {
         }
     }
 
+    // Handle toolbar back button
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             onBackPressedDispatcher.onBackPressed()
@@ -113,3 +121,4 @@ class RecipeDetailActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
+// End of file: RecipeDetailActivity.kt

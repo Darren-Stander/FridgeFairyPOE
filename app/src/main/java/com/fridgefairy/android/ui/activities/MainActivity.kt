@@ -1,3 +1,6 @@
+// Start of file: MainActivity.kt
+// This activity displays the main fridge view, showing all food items for the user.
+// It uses a RecyclerView and FoodItemAdapter, and interacts with FridgeViewModel for data operations.
 package com.fridgefairy.android.ui.activities
 
 import android.content.Intent
@@ -30,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private var currentUserId: String? = null
 
+    // ViewModel for fridge data
     private val viewModel: FridgeViewModel by viewModels {
         FridgeViewModelFactory(
             FoodRepository(
@@ -203,3 +207,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+// End of file: MainActivity.kt

@@ -1,3 +1,6 @@
+// Start of file: RecipeSearchActivity.kt
+// This activity allows users to search for recipes based on ingredients in their fridge.
+// It uses a RecyclerView and RecipeAdapter to display results, and interacts with RecipeViewModel for data operations.
 package com.fridgefairy.android.ui.activities
 
 import android.os.Bundle
@@ -23,6 +26,7 @@ class RecipeSearchActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private var currentUserId: String? = null
 
+    // ViewModel for recipe data
     private val recipeViewModel: RecipeViewModel by viewModels {
         RecipeViewModelFactory(
             RecipeRepository(
@@ -36,6 +40,7 @@ class RecipeSearchActivity : AppCompatActivity() {
         binding = ActivityRecipeSearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Set up toolbar
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Recipe Search"
@@ -56,6 +61,7 @@ class RecipeSearchActivity : AppCompatActivity() {
         observeViewModel()
     }
 
+    // Set up RecyclerView with adapter and layout manager
     private fun setupRecyclerView() {
         recipeAdapter = RecipeAdapter { recipe ->
             Toast.makeText(this, "Clicked: ${recipe.title}", Toast.LENGTH_SHORT).show()
@@ -67,6 +73,7 @@ class RecipeSearchActivity : AppCompatActivity() {
         }
     }
 
+    // Set up listener for search button
     private fun setupSearchListener() {
         binding.buttonSearchRecipes.setOnClickListener {
             val query = binding.editTextSearchQuery.text.toString().trim()
@@ -80,6 +87,7 @@ class RecipeSearchActivity : AppCompatActivity() {
         }
     }
 
+    // Observe ViewModel LiveData for updates
     private fun observeViewModel() {
         recipeViewModel.searchResults.observe(this) { recipes ->
             showLoading(false)
@@ -103,12 +111,14 @@ class RecipeSearchActivity : AppCompatActivity() {
         }
     }
 
+    // Show or hide loading indicator
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         binding.buttonSearchRecipes.isEnabled = !isLoading
         binding.editTextSearchQuery.isEnabled = !isLoading
     }
 
+    // Handle toolbar item selections
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             onBackPressedDispatcher.onBackPressed()
@@ -117,3 +127,4 @@ class RecipeSearchActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
+// End of file: RecipeSearchActivity.kt

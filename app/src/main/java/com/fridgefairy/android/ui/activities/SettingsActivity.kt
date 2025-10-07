@@ -1,3 +1,6 @@
+// Start of file: SettingsActivity.kt
+// This activity allows the user to change app settings such as notifications, theme, diet, and intolerances.
+// It loads settings from shared preferences and updates them based on user interaction.
 package com.fridgefairy.android.ui.activities
 
 import android.content.Context
@@ -28,6 +31,7 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Set up toolbar
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Settings"
@@ -38,6 +42,7 @@ class SettingsActivity : AppCompatActivity() {
         setupListeners()
     }
 
+    // Loads settings from shared preferences and updates UI
     private fun loadSettings() {
         val notificationsEnabled = sharedPreferences.getBoolean(KEY_NOTIFICATIONS, true)
         binding.switchNotifications.isChecked = notificationsEnabled
@@ -56,6 +61,7 @@ class SettingsActivity : AppCompatActivity() {
         binding.checkboxPeanut.isChecked = intolerances.contains("peanut")
     }
 
+    // Sets up listeners for user interactions
     private fun setupListeners() {
         binding.switchNotifications.setOnCheckedChangeListener { _, isChecked ->
             sharedPreferences.edit().putBoolean(KEY_NOTIFICATIONS, isChecked).apply()
@@ -93,6 +99,7 @@ class SettingsActivity : AppCompatActivity() {
         binding.checkboxPeanut.setOnCheckedChangeListener(intoleranceListener)
     }
 
+    // Saves selected intolerances to shared preferences
     private fun saveIntolerances() {
         val intolerances = mutableListOf<String>()
         if (binding.checkboxGluten.isChecked) intolerances.add("gluten")
@@ -104,6 +111,7 @@ class SettingsActivity : AppCompatActivity() {
         sharedPreferences.edit().putString(KEY_INTOLERANCES, intolerancesString).apply()
     }
 
+    // Applies the selected theme
     private fun applyTheme(themeIndex: Int) {
         val mode = when (themeIndex) {
             0 -> AppCompatDelegate.MODE_NIGHT_NO // Light mode
@@ -113,6 +121,7 @@ class SettingsActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(mode)
     }
 
+    // Retrieves the diet preference as a string
     fun getDietPreference(context: Context): String? {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val dietIndex = prefs.getInt(KEY_DIET, 0)
@@ -125,12 +134,14 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
+    // Retrieves the intolerances as a comma-separated string
     fun getIntolerances(context: Context): String? {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val intolerances = prefs.getString(KEY_INTOLERANCES, "")
         return if (intolerances.isNullOrBlank()) null else intolerances
     }
 
+    // Handles menu item selections
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
@@ -141,3 +152,4 @@ class SettingsActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
+// End of file: SettingsActivity.kt

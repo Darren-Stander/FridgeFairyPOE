@@ -1,3 +1,6 @@
+// Start of file: ShoppingListActivity.kt
+// This activity displays the user's shopping list and allows adding, removing, and editing items.
+// It uses a RecyclerView and ShoppingListAdapter to show the list, and interacts with ShoppingListViewModel for data operations.
 package com.fridgefairy.android.ui.activities
 
 import android.content.Intent
@@ -25,6 +28,7 @@ class ShoppingListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityShoppingListBinding
     private lateinit var adapter: ShoppingListAdapter
 
+    // ViewModel for shopping list data
     private val viewModel: ShoppingListViewModel by viewModels {
         ShoppingListViewModelFactory(
             ShoppingListRepository(
@@ -38,11 +42,12 @@ class ShoppingListActivity : AppCompatActivity() {
         binding = ActivityShoppingListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Set up toolbar
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Shopping List"
 
-        // Handle toolbar back arrow click explicitly
+        // Handle toolbar back arrow click
         binding.toolbar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
@@ -165,3 +170,4 @@ class ShoppingListActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
+// End of file: ShoppingListActivity.kt

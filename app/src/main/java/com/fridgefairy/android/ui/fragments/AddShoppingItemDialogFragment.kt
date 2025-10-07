@@ -1,3 +1,6 @@
+// Start of file: AddShoppingItemDialogFragment.kt
+// This fragment displays a dialog for adding a new shopping list item.
+// It collects user input and passes the new ShoppingListItem to the parent activity via a callback.
 package com.fridgefairy.android.ui.fragments
 
 import android.app.AlertDialog
@@ -10,6 +13,7 @@ import com.fridgefairy.android.data.entities.ShoppingListItem
 
 class AddShoppingItemDialogFragment : DialogFragment() {
 
+    // Callback for when a shopping item is added
     var onItemAdded: ((ShoppingListItem) -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -45,3 +49,4 @@ class AddShoppingItemDialogFragment : DialogFragment() {
         return builder.create()
     }
 }
+// End of file: AddShoppingItemDialogFragment.kt

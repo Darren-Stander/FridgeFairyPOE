@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- This layout defines the onboarding screen for first-time users. -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,6 +9,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.OnboardingActivity">
 
+    <!-- AppBar with Toolbar for app branding -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
@@ -21,6 +23,7 @@
             app:title="@string/app_name" />
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- Scrollable content for onboarding info -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
@@ -35,6 +38,7 @@
             android:padding="24dp"
             android:gravity="center">
 
+            <!-- App logo with border -->
             <ImageView
                 android:id="@+id/imgLogo"
                 android:layout_width="200dp"
@@ -44,6 +48,7 @@
                 android:src="@mipmap/ic_launcher"
                 android:background="@drawable/ic_launcher_border" />
 
+            <!-- Welcome title in bold -->
             <TextView
                 android:id="@+id/txtTitle"
                 android:layout_width="wrap_content"
@@ -54,6 +59,7 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="16dp" />
 
+            <!-- Subtitle for onboarding description -->
             <TextView
                 android:id="@+id/txtSubtitle"
                 android:layout_width="wrap_content"
@@ -64,6 +70,7 @@
                 android:textAlignment="center"
                 android:layout_marginBottom="32dp" />
 
+            <!-- Get Started button to proceed -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGetStarted"
                 android:layout_width="wrap_content"

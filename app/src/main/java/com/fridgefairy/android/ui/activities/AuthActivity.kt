@@ -1,3 +1,6 @@
+// Start of file: AuthActivity.kt
+// This activity handles user authentication, including email/password and Google sign-in.
+// It uses FirebaseAuth and GoogleSignInClient for authentication and navigates to the main app on success.
 package com.fridgefairy.android.ui.activities
 
 import android.content.Intent
@@ -21,6 +24,7 @@ class AuthActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
+    // Launcher for Google sign-in intent
     private val googleSignInLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
@@ -40,6 +44,7 @@ class AuthActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
+        // Configure Google Sign-In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -95,6 +100,7 @@ class AuthActivity : AppCompatActivity() {
         googleSignInLauncher.launch(googleSignInClient.signInIntent)
     }
 
+    // Handles Firebase authentication with Google account
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         firebaseAuth.signInWithCredential(credential)
@@ -115,3 +121,4 @@ class AuthActivity : AppCompatActivity() {
         finish()
     }
 }
+// End of file: AuthActivity.kt

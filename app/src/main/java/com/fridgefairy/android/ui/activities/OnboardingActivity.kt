@@ -1,3 +1,8 @@
+// Start of file: OnboardingActivity.kt
+// This activity displays the onboarding screen when the app is first launched.
+// It checks shared preferences to determine if onboarding is complete.
+// If onboarding is complete, it redirects to AuthActivity.
+// Otherwise, it shows the onboarding UI and marks onboarding as complete when the user clicks the button.
 package com.fridgefairy.android.ui.activities
 
 import android.content.Context
@@ -11,20 +16,26 @@ class OnboardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Access shared preferences to check onboarding status
         val prefs = getSharedPreferences("FridgeFairyPrefs", Context.MODE_PRIVATE)
         if (prefs.getBoolean("onboarding_complete", false)) {
+            // If onboarding is complete, go to AuthActivity
             startActivity(Intent(this, AuthActivity::class.java))
             finish()
             return
         }
 
+        // Set the onboarding layout
         setContentView(R.layout.activity_onboarding)
 
+        // Set up the Get Started button
         val btn = findViewById<MaterialButton>(R.id.btnGetStarted)
         btn.setOnClickListener {
+            // Mark onboarding as complete and go to AuthActivity
             prefs.edit().putBoolean("onboarding_complete", true).apply()
             startActivity(Intent(this, AuthActivity::class.java))
             finish()
         }
     }
 }
+// End of file: OnboardingActivity.kt
