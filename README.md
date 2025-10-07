@@ -31,7 +31,7 @@ A mobile budgeting application designed to help users reach financial goals, tra
 
 *    Auth: FirebaseAuth (email/password + Google sign-in).
 *    Auth decisions are in AuthActivity.kt; successful sign-in routes to the main flow.
-*    Scanning: CameraX and ML Kit (Text Recognition & Barcode Scanning) wired in ReceiptScannerActivity.kt.
+
 
 #### UI Layer:
 
