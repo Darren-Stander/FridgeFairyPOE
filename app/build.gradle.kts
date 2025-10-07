@@ -29,7 +29,7 @@ android {
             localProperties.load(FileInputStream(localPropertiesFile))
         }
 
-        val apiKey = localProperties.getProperty("SPOONACULAR_API_KEY") ?: ""
+        val apiKey = localProperties.getProperty("SPOONACULAR_API_KEY") ?: "cd6e72a30da345cfbe15154820c0ca97"
         buildConfigField("String", "SPOONACULAR_API_KEY", "\"$apiKey\"")
     }
 

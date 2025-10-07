@@ -1,4 +1,4 @@
-// In your project-level build.gradle.kts - REPLACE the existing content with this
+// In your project-level build.gradle.kts
 buildscript {
     repositories {
         google()
