@@ -5,6 +5,42 @@
 
 A mobile budgeting application designed to help users reach financial goals, track expenditure, and make informed financial decisions through an interactive, gamified experience.
 
+## Purpose of the App
+
+*    FridgeFairy is an Android app that helps people reduce food waste and plan meals by turning the contents of their fridge/pantry into actionable decisions:
+*    Track food inventory (name, category, quantity, storage location, expiry).
+*    Surface what’s expiring soon so users act before items spoil.
+*    Build and manage a shopping list with quick add, mark-as-purchased, and swipe-to-delete + UNDO.
+*    Per-user data separation via Firebase Authentication (email/password & Google sign-in) with Room queries scoped by userId.
+
+## Design & Architecture Considerations
+### Architecture & Code Organisation
+
+#### Pattern: MVVM with Repositories
+
+*    ui/activities + ui/viewmodels handle presentation & state.
+*    data/entities, data/dao, data/repository handle persistence and data access.
+*    data/api contains Retrofit services for recipes
+
+#### Persistence: Room database (FridgeFairyDatabase.kt) with DAOs:
+
+*    FoodDao.kt (scoped by userId), ShoppingListDao.kt, RecipeDao.kt (cached results/likes, if used).
+*    Entities include FoodItem, ShoppingListItem, Recipe.
+
+#### Networking: Retrofit + OkHttp logging for recipe search/details.
+
+*    Auth: FirebaseAuth (email/password + Google sign-in).
+*    Auth decisions are in AuthActivity.kt; successful sign-in routes to the main flow.
+*    Scanning: CameraX and ML Kit (Text Recognition & Barcode Scanning) wired in ReceiptScannerActivity.kt.
+
+#### UI Layer:
+
+*    Material Components, CoordinatorLayout, Toolbar, RecyclerView lists, Floating Action Button, Snackbars for actions and undo.
+*    Patterns such as swipe-to-delete with ItemTouchHelper and UNDO via Snackbar are in the list screens.
+*    An OnboardingActivity communicates app purpose and first-run hints.
+*    Navigation: Multiple activities (MainActivity, RecipeSearchActivity, RecipeDetailActivity, ShoppingListActivity, SettingsActivity, etc.) with parentActivityName in the manifest for consistent Up navigation.
+*    Offline-first: Room backs all primary flows (inventory & shopping list) so the app works without a connection; Retrofit features degrade gracefully.
+
 ## Team Members
 - Tayyib Dawood (ST10132915) Leader
 - Darren Jade Stander (ST10209886)
