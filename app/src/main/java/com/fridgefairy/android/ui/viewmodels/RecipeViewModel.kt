@@ -58,24 +58,22 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
                 val recipes = repository.searchRecipes(query, apiKey, diet, intolerances)
 
                 if (recipes != null) {
-                    _searchResults.postValue(recipes)
+                    _searchResults.postValue(recipes!!)
                 } else {
                     _searchResults.postValue(emptyList())
+                    _errorMessage.postValue("Failed to fetch recipes. Please check your connection.")
                 }
             } catch (e: Exception) {
                 _errorMessage.postValue(e.message)
                 _searchResults.postValue(emptyList())
+                _errorMessage.postValue("An error occurred: ${e.message}")
             } finally {
                 _isLoading.postValue(false)
             }
         }
     }
 
-    // Finds recipes by ingredients
-    fun findRecipesByIngredients(
-        ingredients: List<String>,
-        apiKey: String
-    ) {
+    fun findRecipesByIngredients(ingredients: List<String>, apiKey: String) {
         viewModelScope.launch {
             _isLoading.postValue(true)
             _errorMessage.postValue(null)
@@ -83,20 +81,25 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
                 val recipes = repository.findRecipesByIngredients(ingredients, apiKey)
 
                 if (recipes != null) {
-                    _ingredientBasedRecipes.postValue(recipes)
+                    _ingredientBasedRecipes.postValue(recipes!!)
                 } else {
                     _ingredientBasedRecipes.postValue(emptyList())
+                    _errorMessage.postValue("Failed to fetch recipes. Please check your connection.")
                 }
             } catch (e: Exception) {
                 _errorMessage.postValue(e.message)
                 _ingredientBasedRecipes.postValue(emptyList())
+                _errorMessage.postValue("An error occurred: ${e.message}")
             } finally {
                 _isLoading.postValue(false)
             }
         }
     }
 
-    // Gets a recipe by its ID
+    fun insert(recipe: Recipe) = viewModelScope.launch {
+        repository.insert(recipe)
+    }
+
     suspend fun getRecipeById(id: Int): Recipe? {
         return repository.getRecipeById(id)
     }
