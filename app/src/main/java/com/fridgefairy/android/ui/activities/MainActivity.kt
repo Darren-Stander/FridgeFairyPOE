@@ -22,6 +22,7 @@ import com.fridgefairy.android.databinding.ActivityMainBinding
 import com.fridgefairy.android.ui.adapters.FoodItemAdapter
 import com.fridgefairy.android.ui.fragments.AddFoodItemDialogFragment
 import com.fridgefairy.android.ui.viewmodels.FridgeViewModel
+import com.fridgefairy.android.utils.BiometricHelper
 import com.fridgefairy.android.ui.viewmodels.FridgeViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -197,6 +198,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.action_logout -> {
+                // Clear biometric data on logout
+                BiometricHelper.clearBiometricData(this)
                 auth.signOut()
                 startActivity(Intent(this, AuthActivity::class.java))
                 finish()

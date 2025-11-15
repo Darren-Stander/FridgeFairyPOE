@@ -18,6 +18,17 @@
 
     <string name="back">Back</string>
 
+    <!-- Biometric Authentication -->
+    <string name="biometric_login">Login with Biometric</string>
+    <string name="biometric_title">Login to FridgeFairy</string>
+    <string name="biometric_subtitle">Use your biometric credential to login</string>
+    <string name="biometric_description">Use fingerprint or face unlock to login quickly</string>
+    <string name="enable_biometric">Enable Biometric Login</string>
+    <string name="biometric_enabled">Biometric login enabled</string>
+    <string name="biometric_disabled">Biometric login disabled</string>
+    <string name="biometric_success">Biometric login successful!</string>
+    <string name="biometric_failed">Biometric authentication failed. Try again.</string>
+    <string name="biometric_error">Authentication error: %s</string>
 
 <string name="onboarding_title_short">FridgeFairy</string>
 <string name="onboarding_title">Cook from What You Have</string>

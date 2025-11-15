@@ -87,11 +87,9 @@ class ShoppingListActivity : AppCompatActivity() {
                 .show()
         }
 
-        // need to comment this back in p3///////////////////////////////////////////////////////
-       // binding.buttonOpenScanner.setOnClickListener {
-         //   startActivity(Intent(this, ReceiptScannerActivity::class.java))
-        //}
-        /////////////////////////////////////////////////////////////////////////////////////////
+        binding.buttonOpenScanner.setOnClickListener {
+            startActivity(Intent(this, ReceiptScannerActivity::class.java))
+        }
     }
 
     private fun observeData() {

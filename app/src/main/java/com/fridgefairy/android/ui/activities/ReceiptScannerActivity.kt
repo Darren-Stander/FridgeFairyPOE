@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Size
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -145,7 +144,6 @@ class ReceiptScannerActivity : AppCompatActivity() {
         try { provider.unbind(analysis) } catch (_: Exception) {}
 
         analysis = ImageAnalysis.Builder()
-            .setTargetResolution(Size(1280, 720))
             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
             .build()
 

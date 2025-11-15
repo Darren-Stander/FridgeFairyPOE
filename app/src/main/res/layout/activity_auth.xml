@@ -72,4 +72,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <!-- Biometric Login Button (shown only when available) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_biometric_login"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Login with Biometric"
+        android:visibility="gone"
+        app:icon="@android:drawable/ic_secure"
+        app:iconGravity="textStart"
+        tools:visibility="visible" />
+
 </LinearLayout>

@@ -46,6 +46,33 @@
                 android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginBottom="16dp"/>
 
+            <!-- Biometric Authentication Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Security"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textColor="?android:attr/textColorPrimary"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_biometric"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enable Biometric Login"
+                android:textColor="?android:attr/textColorPrimary"/>
+
+            <TextView
+                android:id="@+id/text_biometric_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Use fingerprint or face unlock to login quickly"
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"/>
+
             <TextView
                 android:id="@+id/text_theme_label"
                 android:layout_width="wrap_content"

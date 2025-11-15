@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.fridgefairy.android.R
 import com.fridgefairy.android.databinding.ActivityAuthBinding
+import com.fridgefairy.android.utils.BiometricHelper
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -81,6 +82,10 @@ class AuthActivity : AppCompatActivity() {
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
+                // Save email for biometric login if enabled
+                if (BiometricHelper.isBiometricEnabled(this)) {
+                    BiometricHelper.saveUserEmail(this, email)
+                }
                 Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show()
                 navigateToMain()
             }
@@ -106,6 +111,11 @@ class AuthActivity : AppCompatActivity() {
         firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    // Save email for biometric login if enabled
+                    val email = firebaseAuth.currentUser?.email
+                    if (BiometricHelper.isBiometricEnabled(this) && email != null) {
+                        BiometricHelper.saveUserEmail(this, email)
+                    }
                     Toast.makeText(this, "Google Sign In successful!", Toast.LENGTH_SHORT).show()
                     navigateToMain()
                 } else {

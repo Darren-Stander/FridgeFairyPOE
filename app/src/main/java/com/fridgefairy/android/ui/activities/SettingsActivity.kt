@@ -8,10 +8,11 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import com.fridgefairy.android.R
 import com.fridgefairy.android.databinding.ActivitySettingsBinding
+import com.fridgefairy.android.utils.BiometricHelper
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -59,6 +60,17 @@ class SettingsActivity : AppCompatActivity() {
         binding.checkboxDairy.isChecked = intolerances.contains("dairy")
         binding.checkboxEgg.isChecked = intolerances.contains("egg")
         binding.checkboxPeanut.isChecked = intolerances.contains("peanut")
+
+        // Load biometric setting
+        binding.switchBiometric.isChecked = BiometricHelper.isBiometricEnabled(this)
+
+        // Disable biometric switch if not available
+        if (!BiometricHelper.isBiometricAvailable(this)) {
+            binding.switchBiometric.isEnabled = false
+            binding.textBiometricStatus.text = BiometricHelper.getBiometricStatusMessage(this)
+        } else {
+            binding.textBiometricStatus.text = "Use fingerprint or face unlock to login quickly"
+        }
     }
 
     // Sets up listeners for user interactions
@@ -97,6 +109,25 @@ class SettingsActivity : AppCompatActivity() {
         binding.checkboxDairy.setOnCheckedChangeListener(intoleranceListener)
         binding.checkboxEgg.setOnCheckedChangeListener(intoleranceListener)
         binding.checkboxPeanut.setOnCheckedChangeListener(intoleranceListener)
+
+        // Biometric toggle listener
+        binding.switchBiometric.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                // Check if biometric is available before enabling
+                if (BiometricHelper.isBiometricAvailable(this)) {
+                    BiometricHelper.setBiometricEnabled(this, true)
+                    Toast.makeText(this, "Biometric login enabled", Toast.LENGTH_SHORT).show()
+                } else {
+                    // Disable if not available
+                    binding.switchBiometric.isChecked = false
+                    Toast.makeText(this, BiometricHelper.getBiometricStatusMessage(this), Toast.LENGTH_LONG).show()
+                }
+            } else {
+                BiometricHelper.setBiometricEnabled(this, false)
+                BiometricHelper.clearBiometricData(this)
+                Toast.makeText(this, "Biometric login disabled", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     // Saves selected intolerances to shared preferences
