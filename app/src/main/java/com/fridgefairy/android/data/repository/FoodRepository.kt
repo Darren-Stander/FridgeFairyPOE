@@ -35,4 +35,9 @@ class FoodRepository(private val foodDao: FoodDao) {
     suspend fun getExpired(): List<FoodItem> {
         return foodDao.getExpiredFoodItems(currentUserId, System.currentTimeMillis())
     }
+
+    // *** NEW FUNCTION ADDED HERE ***
+    suspend fun getAllFoodItemsList(): List<FoodItem> {
+        return foodDao.getAllFoodItemsList(currentUserId)
+    }
 }

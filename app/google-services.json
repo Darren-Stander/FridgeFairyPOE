@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "852356997069-jvke6pvk7qqab6kpitcf19nvipb13ott.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fridgefairy.android",
+            "certificate_hash": "a1c9366f1f29542e3cf527ba60ffb981bbd6f92f"
+          }
+        },
+        {
           "client_id": "852356997069-blo984o8esr15flg7t44bvb26fl1hr64.apps.googleusercontent.com",
           "client_type": 3
         }

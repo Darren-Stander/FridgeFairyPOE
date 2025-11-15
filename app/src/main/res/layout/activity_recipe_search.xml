@@ -50,7 +50,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Search"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="8dp"/> <com.google.android.material.chip.Chip
+            android:id="@+id/chip_diet_filter"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginBottom="8dp"
+            android:text="Vegan"
+            android:visibility="gone"
+            app:closeIconVisible="true"
+            tools:visibility="visible" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"

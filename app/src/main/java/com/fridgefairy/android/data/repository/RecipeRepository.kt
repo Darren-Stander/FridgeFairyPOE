@@ -28,10 +28,12 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
     suspend fun searchRecipes(
         query: String,
         apiKey: String,
+        // *** MODIFIED: Accept new parameters ***
         diet: String? = null,
         intolerances: String? = null
     ): List<Recipe>? {
         return try {
+            // *** MODIFIED: Pass parameters to the API service ***
             val response = recipeApiService.searchRecipes(
                 query = query,
                 apiKey = apiKey,
@@ -90,10 +92,22 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
         }
     }
 
-    suspend fun findRecipesByIngredients(ingredients: List<String>, apiKey: String): List<Recipe>? {
+    suspend fun findRecipesByIngredients(
+        ingredients: List<String>,
+        apiKey: String,
+        // *** MODIFIED: Accept new parameters (even if API ignores them) ***
+        diet: String? = null,
+        intolerances: String? = null
+    ): List<Recipe>? {
         return try {
             val ingredientsString = ingredients.joinToString(",")
-            val response = recipeApiService.findRecipesByIngredients(ingredientsString, apiKey)
+            // *** MODIFIED: Pass parameters to the API service ***
+            val response = recipeApiService.findRecipesByIngredients(
+                ingredients = ingredientsString,
+                apiKey = apiKey
+                // Note: We don't pass diet/intolerances here as the API
+                // endpoint findByIngredients does not support them in the free plan.
+            )
 
             if (response.isSuccessful && response.body() != null) {
                 val results = response.body()!!

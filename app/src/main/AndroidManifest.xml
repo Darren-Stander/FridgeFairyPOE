@@ -10,6 +10,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -37,41 +40,72 @@
 
         <activity
             android:name=".ui.activities.MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.FridgeFairy.NoActionBar"> <intent-filter>
+            <action android:name="ACTION_CONSUME_ITEM" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.activities.SettingsActivity"
             android:exported="false"
-            android:parentActivityName=".ui.activities.MainActivity" />
-
-        <activity
-            android:name=".ui.activities.RecipeSearchActivity"
-            android:exported="false"
-            android:parentActivityName=".ui.activities.MainActivity" />
-
-        <activity
-            android:name=".ui.activities.RecipeDetailActivity"
-            android:exported="false"
-            android:parentActivityName=".ui.activities.RecipeSearchActivity" />
-
-        <activity
-            android:name=".ui.activities.RecipesByIngredientsActivity"
-            android:exported="false"
-            android:parentActivityName=".ui.activities.MainActivity" />
-
-        <activity
-            android:name=".ui.activities.ShoppingListActivity"
-            android:exported="false"
-            android:parentActivityName=".ui.activities.MainActivity" />
-
-        <activity android:name=".ui.activities.RegisterActivity"
-            android:exported="false" />
+            android:parentActivityName=".ui.activities.MainActivity"
+            android:theme="@style/Theme.FridgeFairy.NoActionBar" /> <activity
+        android:name=".ui.activities.RecipeSearchActivity"
+        android:exported="false"
+        android:parentActivityName=".ui.activities.MainActivity"
+        android:theme="@style/Theme.FridgeFairy.NoActionBar" /> <activity
+        android:name=".ui.activities.RecipeDetailActivity"
+        android:exported="false"
+        android:parentActivityName=".ui.activities.RecipeSearchActivity"
+        android:theme="@style/Theme.FridgeFairy.NoActionBar" /> <activity
+        android:name=".ui.activities.RecipesByIngredientsActivity"
+        android:exported="false"
+        android:parentActivityName=".ui.activities.MainActivity"
+        android:theme="@style/Theme.FridgeFairy.NoActionBar" /> <activity
+        android:name=".ui.activities.ShoppingListActivity"
+        android:exported="false"
+        android:parentActivityName=".ui.activities.MainActivity"
+        android:theme="@style/Theme.FridgeFairy.NoActionBar" /> <activity
+        android:name=".ui.activities.RegisterActivity"
+        android:exported="false" />
 
         <activity
             android:name=".ui.activities.ReceiptScannerActivity"
             android:exported="false"
             android:theme="@style/Theme.Material3.DayNight.NoActionBar" />
 
+        <activity
+            android:name=".ui.activities.AnalyticsActivity"
+            android:exported="false"
+            android:label="@string/analytics"
+            android:parentActivityName=".ui.activities.MainActivity"
+            android:theme="@style/Theme.FridgeFairy.NoActionBar"> <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".ui.activities.MainActivity" />
+        </activity>
+
+        <service
+            android:name=".services.FridgeFairyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_fridge" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/primary" />
 
     </application>
 

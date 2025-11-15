@@ -26,8 +26,8 @@ class AddShoppingItemDialogFragment : DialogFragment() {
         val editTextQuantity = view.findViewById<EditText>(R.id.edit_text_quantity)
 
         builder.setView(view)
-            .setTitle("Add Shopping Item")
-            .setPositiveButton("Add") { dialog, id ->
+            .setTitle(R.string.add_item) // <-- UPDATED (uses "Add Item" string)
+            .setPositiveButton(R.string.add) { dialog, id -> // <-- UPDATED
                 val name = editTextName.text.toString()
                 val category = editTextCategory.text.toString()
                 val quantity = editTextQuantity.text.toString().toIntOrNull() ?: 1
@@ -42,7 +42,7 @@ class AddShoppingItemDialogFragment : DialogFragment() {
                     onItemAdded?.invoke(item)
                 }
             }
-            .setNegativeButton("Cancel") { dialog, id ->
+            .setNegativeButton(R.string.cancel) { dialog, id -> // <-- UPDATED
                 dialog.dismiss()
             }
 

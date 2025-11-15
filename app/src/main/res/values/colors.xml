@@ -1,13 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Modern Professional Color Scheme for FridgeFairy -->
+<!-- Includes legacy colors for backward compatibility -->
 <resources>
+    <!-- Primary Colors (Modern Green) -->
+    <color name="primary">#4CAF50</color>
+    <color name="primary_dark">#388E3C</color>
+    <color name="primary_light">#C8E6C9</color>
+    <color name="primary_variant">#2E7D32</color>
+
+    <!-- Secondary Colors (Vibrant Orange) -->
+    <color name="secondary">#FF9800</color>
+    <color name="secondary_dark">#F57C00</color>
+    <color name="secondary_light">#FFE0B2</color>
+    <color name="secondary_variant">#EF6C00</color>
+
+    <!-- Accent Colors -->
+    <color name="accent">#FF5722</color>
+    <color name="accent_light">#FF8A65</color>
+
+    <!-- Background Colors -->
+    <color name="background">#FAFAFA</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#F5F5F5</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_hint">#BDBDBD</color>
+    <color name="text_on_primary">#FFFFFF</color>
+    <color name="text_on_secondary">#FFFFFF</color>
+    <color name="text_on_surface">#212121</color>
+
+    <!-- Status Colors -->
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FF9800</color>
+    <color name="error">#F44336</color>
+    <color name="info">#2196F3</color>
+
+    <!-- Expiry Status Colors -->
+    <color name="expiry_fresh">#4CAF50</color>
+    <color name="expiry_warning">#FF9800</color>
+    <color name="expiry_expired">#F44336</color>
+
+    <!-- Divider and Border -->
+    <color name="divider">#E0E0E0</color>
+    <color name="border">#BDBDBD</color>
+
+    <!-- Card and Elevation -->
+    <color name="card_background">#FFFFFF</color>
+    <color name="elevation_overlay">#000000</color>
+
+    <!-- Gradient Colors -->
+    <color name="gradient_start">#4CAF50</color>
+    <color name="gradient_end">#FF9800</color>
+
+    <!-- CRITICAL: Legacy Colors for backward compatibility with existing layouts -->
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorAccent">#FF9800</color>
+
+    <!-- CRITICAL: Old purple/teal colors (needed by existing layouts) -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
 
+    <!-- Common Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- Ripple Effect -->
+    <color name="ripple_color">#1A000000</color>
+
+    <!-- Bottom Navigation -->
+    <color name="bottom_nav_selected">#4CAF50</color>
+    <color name="bottom_nav_unselected">#757575</color>
+
+    <!-- Existing expiry colors (for backward compatibility) -->
     <color name="expired_red">#FF0000</color>
     <color name="expiring_orange">#FFA500</color>
     <color name="fresh_green">#008000</color>

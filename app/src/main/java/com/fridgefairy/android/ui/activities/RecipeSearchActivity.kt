@@ -3,6 +3,7 @@
 // It uses a RecyclerView and RecipeAdapter to display results, and interacts with RecipeViewModel for data operations.
 package com.fridgefairy.android.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -17,7 +18,9 @@ import com.fridgefairy.android.databinding.ActivityRecipeSearchBinding
 import com.fridgefairy.android.ui.adapters.RecipeAdapter
 import com.fridgefairy.android.ui.viewmodels.RecipeViewModel
 import com.fridgefairy.android.ui.viewmodels.RecipeViewModelFactory
+import com.fridgefairy.android.utils.SettingsHelper
 import com.google.firebase.auth.FirebaseAuth
+import java.util.Locale
 
 class RecipeSearchActivity : AppCompatActivity() {
 
@@ -61,10 +64,38 @@ class RecipeSearchActivity : AppCompatActivity() {
         observeViewModel()
     }
 
+    // *** NEW: Add onResume to update the chip every time the screen is shown ***
+    override fun onResume() {
+        super.onResume()
+        updateDietChip()
+    }
+
+    // *** NEW: Function to show/hide the diet filter chip ***
+    private fun updateDietChip() {
+        val diet = SettingsHelper.getDietPreference(this)
+        if (diet != null) {
+            binding.chipDietFilter.text = diet.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+            }
+            binding.chipDietFilter.visibility = View.VISIBLE
+
+            // Set a click listener to inform the user how to remove it
+            binding.chipDietFilter.setOnCloseIconClickListener {
+                Toast.makeText(this, "To change your diet, go to Settings", Toast.LENGTH_LONG).show()
+            }
+
+        } else {
+            binding.chipDietFilter.visibility = View.GONE
+        }
+    }
+
     // Set up RecyclerView with adapter and layout manager
     private fun setupRecyclerView() {
         recipeAdapter = RecipeAdapter { recipe ->
-            Toast.makeText(this, "Clicked: ${recipe.title}", Toast.LENGTH_SHORT).show()
+            // Launch RecipeDetailActivity with the recipe ID
+            val intent = Intent(this, RecipeDetailActivity::class.java)
+            intent.putExtra("RECIPE_ID", recipe.id)
+            startActivity(intent)
         }
 
         binding.recyclerViewRecipes.apply {
@@ -80,7 +111,16 @@ class RecipeSearchActivity : AppCompatActivity() {
 
             if (query.isNotBlank()) {
                 showLoading(true)
-                recipeViewModel.searchRecipes(currentUserId!!, query, BuildConfig.SPOONACULAR_API_KEY)
+
+                val diet = SettingsHelper.getDietPreference(this)
+                val intolerances = SettingsHelper.getIntolerances(this)
+
+                recipeViewModel.searchRecipes(
+                    query = query,
+                    apiKey = BuildConfig.SPOONACULAR_API_KEY,
+                    diet = diet,
+                    intolerances = intolerances
+                )
             } else {
                 Toast.makeText(this, "Please enter a search query", Toast.LENGTH_SHORT).show()
             }

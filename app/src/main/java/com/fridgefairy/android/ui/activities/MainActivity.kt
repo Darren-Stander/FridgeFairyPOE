@@ -1,6 +1,3 @@
-// Start of file: MainActivity.kt
-// This activity displays the main fridge view, showing all food items for the user.
-// It uses a RecyclerView and FoodItemAdapter, and interacts with FridgeViewModel for data operations.
 package com.fridgefairy.android.ui.activities
 
 import android.content.Intent
@@ -22,11 +19,16 @@ import com.fridgefairy.android.databinding.ActivityMainBinding
 import com.fridgefairy.android.ui.adapters.FoodItemAdapter
 import com.fridgefairy.android.ui.fragments.AddFoodItemDialogFragment
 import com.fridgefairy.android.ui.viewmodels.FridgeViewModel
-import com.fridgefairy.android.utils.BiometricHelper
 import com.fridgefairy.android.ui.viewmodels.FridgeViewModelFactory
+import com.fridgefairy.android.utils.BiometricHelper
+import com.fridgefairy.android.workers.SyncWorker
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
+/**
+ * Main Activity - Displays fridge items
+ * Includes WorkManager sync and Analytics navigation
+ */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -34,7 +36,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private var currentUserId: String? = null
 
-    // ViewModel for fridge data
     private val viewModel: FridgeViewModel by viewModels {
         FridgeViewModelFactory(
             FoodRepository(
@@ -59,14 +60,29 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        // Set the current user ID
         currentUserId = currentUser.uid
         viewModel.setUserId(currentUserId!!)
+
+        // Initialize WorkManager (MANDATORY FEATURE)
+        initializeWorkManager()
 
         setupRecyclerView()
         setupClickListeners()
         observeData()
         setupSwipeToDelete()
+    }
+
+    /**
+     * Initialize WorkManager for automatic sync
+     * MANDATORY FEATURE: Offline Mode with Sync
+     */
+    private fun initializeWorkManager() {
+        SyncWorker.scheduleSync(this)
+        Snackbar.make(
+            binding.root,
+            getString(R.string.data_will_sync),
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     private fun setupRecyclerView() {
@@ -102,7 +118,6 @@ class MainActivity : AppCompatActivity() {
     private fun showAddFoodItemDialog() {
         val dialog = AddFoodItemDialogFragment().apply {
             onFoodItemAdded = { foodItem ->
-                // Add userId to the food item
                 val foodItemWithUser = foodItem.copy(userId = currentUserId!!)
                 viewModel.insert(foodItemWithUser)
                 Snackbar.make(
@@ -110,6 +125,9 @@ class MainActivity : AppCompatActivity() {
                     "${foodItem.name} added to fridge",
                     Snackbar.LENGTH_SHORT
                 ).show()
+
+                // Trigger immediate sync after adding item
+                SyncWorker.syncNow(this@MainActivity)
             }
         }
         dialog.show(supportFragmentManager, "AddFoodItemDialog")
@@ -181,33 +199,42 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, SettingsActivity::class.java))
                 true
             }
-
             R.id.action_recipe_search -> {
                 startActivity(Intent(this, RecipeSearchActivity::class.java))
                 true
             }
-
             R.id.action_find_recipes_by_ingredients -> {
                 startActivity(Intent(this, RecipesByIngredientsActivity::class.java))
                 true
             }
-
             R.id.action_shopping_list -> {
                 startActivity(Intent(this, ShoppingListActivity::class.java))
                 true
             }
-
+            R.id.action_analytics -> {
+                // ADDITIONAL FEATURE: Analytics Dashboard
+                startActivity(Intent(this, AnalyticsActivity::class.java))
+                true
+            }
+            R.id.action_refresh -> {
+                // Manual sync trigger
+                SyncWorker.syncNow(this)
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.syncing),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                true
+            }
             R.id.action_logout -> {
-                // Clear biometric data on logout
                 BiometricHelper.clearBiometricData(this)
+                SyncWorker.cancelSync(this)
                 auth.signOut()
                 startActivity(Intent(this, AuthActivity::class.java))
                 finish()
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }
 }
-// End of file: MainActivity.kt

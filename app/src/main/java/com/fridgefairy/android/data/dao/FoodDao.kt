@@ -23,5 +23,8 @@ interface FoodDao {
 
     @Query("SELECT * FROM food_items WHERE userId = :userId AND expirationDate BETWEEN :start AND :end")
     suspend fun getFoodItemsExpiringBetween(userId: String, start: Long, end: Long): List<FoodItem>
-}
 
+    // *** NEW FUNCTION ADDED HERE ***
+    @Query("SELECT * FROM food_items WHERE userId = :userId")
+    suspend fun getAllFoodItemsList(userId: String): List<FoodItem>
+}

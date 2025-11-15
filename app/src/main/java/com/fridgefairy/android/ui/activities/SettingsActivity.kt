@@ -11,8 +11,11 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import com.fridgefairy.android.databinding.ActivitySettingsBinding
 import com.fridgefairy.android.utils.BiometricHelper
+// *** NEW: Import the helper ***
+import com.fridgefairy.android.utils.SettingsHelper
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -23,8 +26,10 @@ class SettingsActivity : AppCompatActivity() {
         private const val PREFS_NAME = "FridgeFairyPrefs"
         private const val KEY_NOTIFICATIONS = "notifications_enabled"
         private const val KEY_THEME = "app_theme"
-        const val KEY_DIET = "diet_preference"
-        const val KEY_INTOLERANCES = "intolerances"
+        // *** MOVED to SettingsHelper ***
+        // const val KEY_DIET = "diet_preference"
+        // const val KEY_INTOLERANCES = "intolerances"
+        private const val KEY_LANGUAGE = "app_language"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,14 +53,39 @@ class SettingsActivity : AppCompatActivity() {
         val notificationsEnabled = sharedPreferences.getBoolean(KEY_NOTIFICATIONS, true)
         binding.switchNotifications.isChecked = notificationsEnabled
 
-        val currentTheme = sharedPreferences.getInt(KEY_THEME, 2)
+        val currentTheme = sharedPreferences.getInt(KEY_THEME, 2) // 2 = System Default
         binding.spinnerTheme.setSelection(currentTheme)
 
-        val currentDiet = sharedPreferences.getInt(KEY_DIET, 0)
+        val languageValue = sharedPreferences.all[KEY_LANGUAGE]
+        var currentLanguageCode = "system" // Default
+
+        if (languageValue is String) {
+            currentLanguageCode = languageValue
+        } else if (languageValue is Int) {
+            currentLanguageCode = when (languageValue) {
+                1 -> "en"
+                2 -> "af"
+                3 -> "zu"
+                else -> "system"
+            }
+            sharedPreferences.edit().putString(KEY_LANGUAGE, currentLanguageCode).apply()
+        }
+
+        val languagePosition = when (currentLanguageCode) {
+            "en" -> 1
+            "af" -> 2
+            "zu" -> 3
+            else -> 0 // "system"
+        }
+        binding.spinnerLanguage.setSelection(languagePosition)
+
+        // *** MODIFIED: Use the key from SettingsHelper ***
+        val currentDiet = sharedPreferences.getInt(SettingsHelper.KEY_DIET, 0)
         binding.spinnerDiet.setSelection(currentDiet)
 
         // Load intolerances checkboxes
-        val intolerances = sharedPreferences.getString(KEY_INTOLERANCES, "") ?: ""
+        // *** MODIFIED: Use the key from SettingsHelper ***
+        val intolerances = sharedPreferences.getString(SettingsHelper.KEY_INTOLERANCES, "") ?: ""
         binding.checkboxGluten.isChecked = intolerances.contains("gluten")
         binding.checkboxDairy.isChecked = intolerances.contains("dairy")
         binding.checkboxEgg.isChecked = intolerances.contains("egg")
@@ -92,9 +122,29 @@ class SettingsActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
+        // Language Spinner Listener
+        binding.spinnerLanguage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
+                val languageCode = when (position) {
+                    1 -> "en" // English
+                    2 -> "af" // Afrikaans
+                    3 -> "zu" // isiZulu
+                    else -> "system" // System Default
+                }
+
+                val currentLangPref = sharedPreferences.getString(KEY_LANGUAGE, "system")
+                if (currentLangPref != languageCode) {
+                    sharedPreferences.edit().putString(KEY_LANGUAGE, languageCode).apply()
+                    applyLanguage(languageCode)
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
         binding.spinnerDiet.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
-                sharedPreferences.edit().putInt(KEY_DIET, position).apply()
+                // *** MODIFIED: Use the key from SettingsHelper ***
+                sharedPreferences.edit().putInt(SettingsHelper.KEY_DIET, position).apply()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -113,12 +163,10 @@ class SettingsActivity : AppCompatActivity() {
         // Biometric toggle listener
         binding.switchBiometric.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                // Check if biometric is available before enabling
                 if (BiometricHelper.isBiometricAvailable(this)) {
                     BiometricHelper.setBiometricEnabled(this, true)
                     Toast.makeText(this, "Biometric login enabled", Toast.LENGTH_SHORT).show()
                 } else {
-                    // Disable if not available
                     binding.switchBiometric.isChecked = false
                     Toast.makeText(this, BiometricHelper.getBiometricStatusMessage(this), Toast.LENGTH_LONG).show()
                 }
@@ -139,7 +187,8 @@ class SettingsActivity : AppCompatActivity() {
         if (binding.checkboxPeanut.isChecked) intolerances.add("peanut")
 
         val intolerancesString = intolerances.joinToString(",")
-        sharedPreferences.edit().putString(KEY_INTOLERANCES, intolerancesString).apply()
+        // *** MODIFIED: Use the key from SettingsHelper ***
+        sharedPreferences.edit().putString(SettingsHelper.KEY_INTOLERANCES, intolerancesString).apply()
     }
 
     // Applies the selected theme
@@ -152,25 +201,18 @@ class SettingsActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(mode)
     }
 
-    // Retrieves the diet preference as a string
-    fun getDietPreference(context: Context): String? {
-        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val dietIndex = prefs.getInt(KEY_DIET, 0)
-        return when (dietIndex) {
-            1 -> "vegetarian"
-            2 -> "vegan"
-            3 -> "ketogenic"
-            4 -> "paleo"
-            else -> null
+    // Apply Language Change
+    private fun applyLanguage(languageCode: String) {
+        val localeList = if (languageCode == "system") {
+            LocaleListCompat.getEmptyLocaleList()
+        } else {
+            LocaleListCompat.forLanguageTags(languageCode)
         }
+        AppCompatDelegate.setApplicationLocales(localeList)
     }
 
-    // Retrieves the intolerances as a comma-separated string
-    fun getIntolerances(context: Context): String? {
-        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val intolerances = prefs.getString(KEY_INTOLERANCES, "")
-        return if (intolerances.isNullOrBlank()) null else intolerances
-    }
+    // *** REMOVED getDietPreference and getIntolerances functions ***
+    // (They are now in SettingsHelper.kt)
 
     // Handles menu item selections
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

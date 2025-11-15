@@ -45,6 +45,7 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
 
     // Searches for recipes by query
     fun searchRecipes(
+        // *** MODIFIED: Added diet and intolerances ***
         query: String,
         apiKey: String,
         diet: String? = null,
@@ -55,6 +56,7 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
             _errorMessage.postValue(null)
 
             try {
+                // *** MODIFIED: Pass parameters to repository ***
                 val recipes = repository.searchRecipes(query, apiKey, diet, intolerances)
 
                 if (recipes != null) {
@@ -73,12 +75,22 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
         }
     }
 
-    fun findRecipesByIngredients(ingredients: List<String>, apiKey: String) {
+    // *** MODIFIED: Added diet and intolerances (though API doesn't support it here) ***
+    fun findRecipesByIngredients(
+        ingredients: List<String>,
+        apiKey: String,
+        diet: String? = null,
+        intolerances: String? = null
+    ) {
         viewModelScope.launch {
             _isLoading.postValue(true)
             _errorMessage.postValue(null)
             try {
-                val recipes = repository.findRecipesByIngredients(ingredients, apiKey)
+                // *** MODIFIED: Pass parameters to repository ***
+                // Note: The Spoonacular "find by ingredients" endpoint doesn't
+                // actually support diet/intolerance filters in the free plan.
+                // We pass them, but they may be ignored by the API.
+                val recipes = repository.findRecipesByIngredients(ingredients, apiKey, diet, intolerances)
 
                 if (recipes != null) {
                     _ingredientBasedRecipes.postValue(recipes!!)

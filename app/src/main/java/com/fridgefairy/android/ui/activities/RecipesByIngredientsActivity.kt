@@ -22,7 +22,9 @@ import com.fridgefairy.android.ui.viewmodels.FridgeViewModel
 import com.fridgefairy.android.ui.viewmodels.FridgeViewModelFactory
 import com.fridgefairy.android.ui.viewmodels.RecipeViewModel
 import com.fridgefairy.android.ui.viewmodels.RecipeViewModelFactory
+import com.fridgefairy.android.utils.SettingsHelper
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class RecipesByIngredientsActivity : AppCompatActivity() {
 
@@ -62,6 +64,32 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
         observeViewModel()
         loadFridgeIngredients()
     }
+
+    // *** NEW: Add onResume to update the chip every time the screen is shown ***
+    override fun onResume() {
+        super.onResume()
+        updateDietChip()
+    }
+
+    // *** NEW: Function to show/hide the diet filter chip ***
+    private fun updateDietChip() {
+        val diet = SettingsHelper.getDietPreference(this)
+        if (diet != null) {
+            binding.chipDietFilter.text = diet.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+            }
+            binding.chipDietFilter.visibility = View.VISIBLE
+
+            // Set a click listener to inform the user how to remove it
+            binding.chipDietFilter.setOnCloseIconClickListener {
+                Toast.makeText(this, "To change your diet, go to Settings", Toast.LENGTH_LONG).show()
+            }
+
+        } else {
+            binding.chipDietFilter.visibility = View.GONE
+        }
+    }
+
 
     // Set up RecyclerView for recipes
     private fun setupRecyclerView() {
@@ -114,10 +142,14 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
                     return@launch
                 }
 
-                // Find recipes by ingredients using RecipeViewModel
+                val diet = SettingsHelper.getDietPreference(this@RecipesByIngredientsActivity)
+                val intolerances = SettingsHelper.getIntolerances(this@RecipesByIngredientsActivity)
+
                 recipeViewModel.findRecipesByIngredients(
                     ingredientNames,
-                    BuildConfig.SPOONACULAR_API_KEY
+                    BuildConfig.SPOONACULAR_API_KEY,
+                    diet,
+                    intolerances
                 )
             }
         }

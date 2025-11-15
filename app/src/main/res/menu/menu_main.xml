@@ -1,26 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
         android:id="@+id/action_recipe_search"
         android:icon="@android:drawable/ic_menu_search"
-        android:title="Search Recipes"
+        android:title="@string/search_recipes"
         app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/action_find_recipes_by_ingredients"
-        android:title="Recipes from Fridge"
+        android:title="@string/recipes_by_ingredients"
         app:showAsAction="never" />
+
     <item
         android:id="@+id/action_shopping_list"
-        android:title="Shopping List"
+        android:title="@string/shopping_list"
         app:showAsAction="never" />
+
+    <!-- NEW: Analytics menu item -->
+    <item
+        android:id="@+id/action_analytics"
+        android:title="@string/analytics"
+        app:showAsAction="never" />
+
+    <!-- NEW: Manual refresh/sync -->
+    <item
+        android:id="@+id/action_refresh"
+        android:title="@string/refresh"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/action_settings"
         android:icon="@android:drawable/ic_menu_manage"
-        android:title="Settings"
+        android:title="@string/settings"
         app:showAsAction="never" />
+
     <item
         android:id="@+id/action_logout"
-        android:title="Logout"
+        android:title="Sign Out"
         app:showAsAction="never" />
 </menu>

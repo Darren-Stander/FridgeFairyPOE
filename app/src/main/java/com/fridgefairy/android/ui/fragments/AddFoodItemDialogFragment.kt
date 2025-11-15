@@ -27,8 +27,8 @@ class AddFoodItemDialogFragment : DialogFragment() {
         val editTextQuantity = view.findViewById<EditText>(R.id.edit_text_quantity)
 
         builder.setView(view)
-            .setTitle("Add Food Item")
-            .setPositiveButton("Add") { dialog, id ->
+            .setTitle(R.string.add_food_item) // <-- UPDATED
+            .setPositiveButton(R.string.add) { dialog, id -> // <-- UPDATED
                 val name = editTextName.text.toString()
                 val category = editTextCategory.text.toString()
                 val quantity = editTextQuantity.text.toString().toIntOrNull() ?: 1
@@ -51,7 +51,7 @@ class AddFoodItemDialogFragment : DialogFragment() {
                     onFoodItemAdded?.invoke(foodItem)
                 }
             }
-            .setNegativeButton("Cancel") { dialog, id ->
+            .setNegativeButton(R.string.cancel) { dialog, id -> // <-- UPDATED
                 dialog.dismiss()
             }
 
