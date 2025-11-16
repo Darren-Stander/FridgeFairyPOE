@@ -272,6 +272,8 @@ This project includes automated tests to ensure core functionality works as expe
 *   **Language:** Kotlin
 *   **IDE:** Android Studio
 *   **CI/CD:** GitHub Actions
+
+## Signed APK Images
    
 
 # References
@@ -281,24 +283,24 @@ This project includes automated tests to ensure core functionality works as expe
 ### Claude sonnet 4.5
 
 *    https://claude.ai/share/8706b2ed-0b3c-422d-8e97-222168718c78
-
 *    https://claude.ai/share/6f59ca9d-e0c8-443d-9814-a78534e41ba7
-
 *    https://claude.ai/share/503bab8d-1c83-4003-a124-403f083624f5
+*    https://claude.ai/share/13b256cf-6217-48cc-ae7d-f7bcb99eeaf4
   
 ### ChatGPT 5
 
 *    https://chatgpt.com/share/68e41720-d208-800c-a64d-829c5e43f3ce
-
+*    https://chatgpt.com/share/691a280f-c16c-800c-9421-0a747fe895ec
 *    https://chatgpt.com/share/68e41b12-6d30-800c-aabc-936efb5f4873
 
   ### YT Videos 
 
 *    https://www.youtube.com/watch?v=4xczNJVHW40
-
 *    https://www.youtube.com/watch?v=QAY47cuMW9k
-
 *    https://www.youtube.com/watch?v=P3B2opeHpV8
+*    https://www.youtube.com/watch?v=QqQ83qK6_rk
+*    https://www.youtube.com/watch?v=_dCRQ9wta-I
+*    https://www.youtube.com/watch?v=tXHWyt8g5jc
 
   ### DeepSeek
 
@@ -369,3 +371,7 @@ Finally, AI was utilized to refine this write-up document itself, improving clar
 
 While AI tools significantly enhanced productivity and problem-solving capabilities throughout the Android development process, all AI-generated solutions were critically reviewed, tested on various Android devices and emulators, and adapted to our specific requirements. The tools served as collaborative assistants rather than autonomous developers, with human oversight ensuring code quality, Android best practices, security, and alignment with project objectives.
 
+## Copilot usage
+* Copilot was used because we needed to change the location of our GitHub Repo, wew weren't able to push the code the repo due to the organisation blocking our attempts.
+* Had an error with the biometrics because the error was stopping the gradle from building, we used it as a tool to debug using the "PLAN" mode.
+* Used Copilot for the planning how the biometrics system would work and then went to do research on how we can fully enable it.
