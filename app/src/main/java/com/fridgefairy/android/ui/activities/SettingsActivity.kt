@@ -156,7 +156,9 @@ class SettingsActivity : AppCompatActivity() {
                     if (email != null) {
                         BiometricHelper.saveUserEmail(this, email)
                         BiometricHelper.setBiometricEnabled(this, true)
-                        Toast.makeText(this, "Biometric login enabled", Toast.LENGTH_SHORT).show()
+                        android.util.Log.d("SettingsActivity", "Biometric ENABLED - Email saved: $email")
+                        android.util.Log.d("SettingsActivity", "Verify - Enabled: ${BiometricHelper.isBiometricEnabled(this)}, Email: ${BiometricHelper.getSavedUserEmail(this)}")
+                        Toast.makeText(this, "Biometric login enabled! You can use it when you log in next time.", Toast.LENGTH_LONG).show()
                     } else {
                         binding.switchBiometric.isChecked = false
                         Toast.makeText(this, "Error: User email not found", Toast.LENGTH_SHORT).show()
@@ -166,16 +168,18 @@ class SettingsActivity : AppCompatActivity() {
                     Toast.makeText(this, BiometricHelper.getBiometricStatusMessage(this), Toast.LENGTH_LONG).show()
                 }
             } else {
+                // Just disable the flag, keep email and token so user can re-enable easily
                 BiometricHelper.setBiometricEnabled(this, false)
-                BiometricHelper.clearBiometricData(this)
+                android.util.Log.d("SettingsActivity", "Biometric DISABLED - Flag set to false")
                 Toast.makeText(this, "Biometric login disabled", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // --- SIGN OUT BUTTON LISTENER (FIXED) ---
+        // --- SIGN OUT BUTTON LISTENER ---
         binding.buttonLogout.setOnClickListener {
             mAuth.signOut()
-            BiometricHelper.clearBiometricData(this)
+            // DO NOT clear biometric data - user should be able to use biometric to login again!
+            // Biometric data will only be cleared if a DIFFERENT user logs in
             Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show()
 
             val intent = Intent(this, AuthActivity::class.java).apply {
