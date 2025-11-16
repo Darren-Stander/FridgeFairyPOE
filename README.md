@@ -16,7 +16,15 @@ https://youtu.be/G3L8bU_WCc8
 *    Build and manage a shopping list with quick add, mark-as-purchased, and swipe-to-delete + UNDO.
 *    Per-user data separation via Firebase Authentication (email/password & Google sign-in) with Room queries scoped by userId.
 
-## Design & Architecture Considerations
+### Core Capabilities
+
+* **Smart Inventory Tracking**: Monitor food items with comprehensive details including name, category, quantity, storage location, and expiry dates
+* **Expiry Alerts**: Proactive notifications highlighting items nearing their expiration date, ensuring nothing goes to waste
+* **Intelligent Shopping List**: Streamlined list management with quick-add functionality, mark-as-purchased tracking, and swipe-to-delete with UNDO capability
+* **Secure User Experience**: Per-user data isolation through Firebase Authentication supporting both email/password and Google sign-in
+* **Offline-First Design**: Full functionality without internet connectivity, with intelligent synchronization when online
+
+## 🎨Design & Architecture Considerations
 ### Architecture & Code Organisation
 
 #### Pattern: MVVM with Repositories
@@ -25,64 +33,228 @@ https://youtu.be/G3L8bU_WCc8
 *    data/entities, data/dao, data/repository handle persistence and data access.
 *    data/api contains Retrofit services for recipes
 
-#### Persistence: Room database (FridgeFairyDatabase.kt) with DAOs:
+#### Room database (FridgeFairyDatabase.kt) with DAOs:
 
-*    FoodDao.kt (scoped by userId), ShoppingListDao.kt, RecipeDao.kt (cached results/likes, if used).
-*    Entities include FoodItem, ShoppingListItem, Recipe.
+* **FoodDao.kt** - User-scoped food inventory management
+* **ShoppingListDao.kt** - Shopping list operations
+* **RecipeDao.kt** - Cached recipe results and user preferences
 
-#### Networking: Retrofit + OkHttp logging for recipe search/details.
+**Entities**:
+*    **FoodItem** - Pantry/fridge inventory items
+*    **ShoppingListItem** - Shopping list entries
+*    **Recipe** - Cached recipe data
 
-*    Auth: FirebaseAuth (email/password + Google sign-in).
-*    Auth decisions are in AuthActivity.kt; successful sign-in routes to the main flow.
+#### Networking & API Integration
 
+*    **Retrofit + OkHttp**: RESTful API communication with logging interceptors
+*    **Spoonacular API**: Recipe search and detailed nutritional information
 
-#### UI Layer:
+#### Authentication & Security
 
-*    Material Components, CoordinatorLayout, Toolbar, RecyclerView lists, Floating Action Button, Snackbars for actions and undo.
-*    Patterns such as swipe-to-delete with ItemTouchHelper and UNDO via Snackbar are in the list screens.
-*    An OnboardingActivity communicates app purpose and first-run hints.
-*    Navigation: Multiple activities (MainActivity, RecipeSearchActivity, RecipeDetailActivity, ShoppingListActivity, SettingsActivity, etc.) with parentActivityName in the manifest for consistent Up navigation.
-*    Offline-first: Room backs all primary flows (inventory & shopping list) so the app works without a connection; Retrofit features degrade gracefully.
+ **Firebase Authentication**
+ *    Secure user management
+ *    Email/password authentication
+ *    Google Sign-In integration
+ *    Biometric authentication (Release 3.0)
+* **AuthActivity**: Centralized authentication flow with seamless routing
+
+---
+
+### Navigation Architecture
+
+* `MainActivity` - Hub for inventory management
+* `RecipeSearchActivity` - Recipe discovery
+* `RecipeDetailActivity` - Detailed recipe view
+* `ShoppingListActivity` - Shopping list management
+* `SettingsActivity` - User preferences and configuration
+* `AnalyticsActivity` - Spending and consumption insights (Release 3.0)
+
+---
+
+### Offline Sync
+
+* **Primary flows** (inventory, shopping list) fully functional without connectivity
+* **Intelligent sync** when connection is restored
+* **Graceful degradation** of network-dependent features (recipes, cloud backup)
+
+---
 
 ## Team Members
 - Tayyib Dawood (ST10132915) Leader
 - Darren Jade Stander (ST10209886)
 
-## Features
+## ✨ Features
 
-*	**User Authentication:** Email/Password and Google Sign-In via Firebase Auth.
-*	**Modern Architecture:** MVVM with ViewModels & LiveData/Flow, Room, Retrofit, Navigation, and ViewBinding.
-*	**Material UI & UX:** CoordinatorLayout + Toolbar (back arrow), Floating Action Button, Snackbars for feedback, and RecyclerView lists.
+### Authentication & Security
+* 🔐 Firebase Authentication with email/password support
+* 🔑 Google Sign-In integration
+* 👆 Biometric login (fingerprint/face recognition)
+* 🔒 Secure per-user data isolation
 
-## Custom Features
-*	**Pantry/Inventory Management:** Add, edit, and delete food items; optional categories/notes; stored locally.
-*	**Recipe Search & Details:** Spoonacular API integration with Retrofit/OkHttp.
-*	**Shopping List:** Add items, mark as purchased, swipe-to-delete with UNDO, and “Clear Purchased” in one tap.
+### Core Functionality
 
-## Advanced Features
-*	**Offline Data Persistence:** All core data (pantry, shopping list, meal plan) stored locally using Room.
+#### 🗃️ Pantry/Inventory Management
+* Add, edit, and delete food items
+* Categorize items for easy organization
+* Track quantities and storage locations
+* Set expiry dates with automatic alerts
+* Add custom notes and details
 
-## Getting Started
+#### 🍳 Recipe Discovery
+* Search thousands of recipes via Spoonacular API
+* View detailed cooking instructions
+* Check nutritional information
+* Save favorite recipes
 
-To get a copy up and running, follow these simple steps:
+#### 🛒 Smart Shopping List
+* Quick-add items from inventory
+* Mark items as purchased
+* Swipe-to-delete with UNDO safety net
+* One-tap "Clear Purchased Items"
+* Sync across devices
 
-1.  **Clone the repository:**
-    git clone https://github.com/MogamatTayyibDawood/FridgeFairy
-   
-2.  **Open the project in Android Studio:**
-    *   Launch Android Studio.
-    *   Select Clone Repository.
- 
-    *   Android Studio will automatically sync the project and download the necessary Gradle dependencies.
+#### 📊 Analytics Dashboard (New!)
+* Track spending patterns
+* Visualize consumption by category (Produce, Dairy, Snacks)
+* Monthly expense summaries
+* Food waste reduction metrics
 
-## Running the App
+### Advanced Features
 
-1.  **Select a Target Device:**
-    * start an Android Virtual Device (AVD) using the AVD Manager in Android Studio go to Tools > AVD Manager for the demo we used Pixel 9 pro.
+#### 📴 Offline-First Data Persistence
+* All core functionality available without internet
+* Automatic background synchronization
+* Conflict resolution for multi-device usage
 
-2.  **Build and Run:**
-    *   Click the Run app button (the green play icon) in the toolbar.
-    *   Android Studio will build the project and launch the application.
+#### 📸 Receipt Scanner (New!)
+* OCR technology to scan grocery receipts
+* Automatic item extraction and categorization
+* Instant addition to inventory or shopping list
+* Expense tracking integration
+
+#### 🌍 Multi-Language Support (New!)
+* English (default)
+* Afrikaans
+* isiZulu
+* Automatic language detection based on device settings
+
+---
+
+## 📋 Release Notes
+
+### Version 3.0 - Latest Release (November 2024)
+
+**🚀 Major New Features**
+
+* **Receipt Scanner** 📸
+  * Intelligent OCR technology to scan and extract items from grocery receipts
+  * Automatic categorization of scanned items
+  * Direct import to inventory or shopping list
+  * Integrated expense tracking for budget management
+
+* **Biometric Authentication** 👆
+  * Fingerprint recognition support
+  * Face ID/Face unlock compatibility
+  * Optional secondary authentication method
+  * Enhanced security without sacrificing convenience
+
+* **Multi-Language Support** 🌍
+  * Full app translation into Afrikaans
+  * Complete isiZulu language support
+  * Automatic language detection
+  * Easy language switching in settings
+
+* **Offline Synchronization** 📴
+  * Intelligent conflict resolution for multi-device usage
+  * Background sync when connectivity is restored
+  * Visual indicators for sync status
+  * Data integrity protection
+
+* **Analytics Dashboard** 📊
+  * Comprehensive spending breakdown
+  * Category-based consumption tracking (Produce, Dairy, Snacks, etc.)
+  * Visual charts and graphs
+  * Monthly and yearly expense summaries
+  * Food waste reduction metrics
+
+**🔧 Improvements & Optimizations**
+
+* Enhanced UI responsiveness
+* Improved database query performance
+* Better error handling and user feedback
+* Optimized battery consumption
+* Reduced app size and memory footprint
+
+---
+
+### Version 2.0 - Feature Release
+
+**🎯 Core Feature Implementation**
+
+* Complete MVVM architecture implementation
+* Firebase Authentication with Google Sign-In
+* Room database for local storage
+* Pantry/inventory management system
+* Recipe search integration with Spoonacular API
+* Shopping list with swipe-to-delete and UNDO
+* Material Design UI components
+* Offline-first functionality
+
+---
+
+### Version 1.0 - Initial Planning & Prototype
+
+**📝 Planning Phase**
+
+* Feature requirement analysis
+* Architecture design decisions
+* Technology stack selection
+* UI/UX wireframing
+* Database schema design
+* API integration planning
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+* Android Studio Hedgehog (2023.1.1) or newer
+* Android SDK 24 (Android 7.0) or higher
+* JDK 11 or higher
+* Git installed on your machine
+
+### Installation
+
+1. **Clone the repository**
+```bash
+   git clone https://github.com/MogamatTayyibDawood/FridgeFairy
+   cd FridgeFairy
+```
+
+2. **Open in Android Studio**
+   * Launch Android Studio
+   * Select `File` → `Open`
+   * Navigate to the cloned repository folder
+   * Click `OK`
+   * Android Studio will automatically sync Gradle and download dependencies
+
+3. **Configure Firebase** (if setting up from scratch)
+   * Download `google-services.json` from Firebase Console
+   * Place it in the `app/` directory
+   * Ensure Firebase Authentication and Firestore are enabled
+
+### Running the App
+
+1. **Select a Target Device**
+   * **Physical Device**: Enable USB debugging in Developer Options
+   * **Emulator**: Create an AVD via `Tools` → `Device Manager`
+     * Recommended: Pixel 9 Pro with Android API 34
+
+2. **Build and Run**
+   * Click the green ▶️ **Run** button in the toolbar
+   * Or use keyboard shortcut: `Shift + F10` (Windows/Linux) or `Control + R` (Mac)
+   * Android Studio will build and deploy the app
 
 ## Running Tests
 
