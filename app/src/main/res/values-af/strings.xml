@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Afrikaans Translation for FridgeFairy -->
 <resources>
-    <!-- App Name -->
     <string name="app_name">FridgeFairy</string>
 
-    <!-- Authentication -->
     <string name="welcome">Welkom</string>
     <string name="sign_in">Teken aan</string>
     <string name="sign_up">Registreer</string>
@@ -18,14 +15,24 @@
     <string name="already_have_account">Het reeds \'n rekening?</string>
     <string name="create_account">Skep rekening</string>
 
-    <!-- Biometric Authentication -->
+    <string name="biometric_login">Meld aan met Biometrie</string>
     <string name="biometric_title">Verifieer met biometrie</string>
     <string name="biometric_subtitle">Raak die vingerafdruksensor om voort te gaan</string>
     <string name="biometric_description">Gebruik jou vingerafdruk om aan te meld</string>
     <string name="biometric_cancel">Kanselleer</string>
     <string name="use_password">Gebruik wagwoord</string>
+    <string name="enable_biometric">Aktiveer Biometriese Aanmelding</string>
+    <string name="biometric_enabled">Biometriese aanmelding geaktiveer</string>
+    <string name="biometric_disabled">Biometriese aanmelding gedeaktiveer</string>
+    <string name="biometric_success">Biometriese aanmelding suksesvol!</string>
+    <string name="biometric_failed">Biometriese stawing het misluk. Probeer weer.</string>
+    <string name="biometric_error">Stawingsfout: %s</string>
 
-    <!-- Onboarding -->
+    <string name="onboarding_title_short">FridgeFairy</string>
+    <string name="onboarding_title">Kook van wat jy het</string>
+    <string name="onboarding_tagline">Verander oorskietkos in smaaklike, begrotingsvriendelike etes.</string>
+    <string name="onboarding_about">FridgeFairy stel resepte voor gebaseer op die bestanddele wat jy reeds het.</string>
+    <string name="onboarding_cta">Begin Nou</string>
     <string name="onboarding_welcome_title">Welkom by FridgeFairy</string>
     <string name="onboarding_welcome_desc">Bestuur jou kos, verminder voedselvermorsing, en ontdek heerlike resepte</string>
     <string name="onboarding_smart_tracking_title">Slim opsporing</string>
@@ -38,13 +45,11 @@
     <string name="skip">Slaan oor</string>
     <string name="get_started">Begin</string>
 
-    <!-- Main Navigation -->
     <string name="nav_fridge">Yskas</string>
     <string name="nav_recipes">Resepte</string>
     <string name="nav_shopping">Inkopies</string>
     <string name="nav_settings">Instellings</string>
 
-    <!-- Fridge -->
     <string name="my_fridge">My yskas</string>
     <string name="add_food_item">Voeg kos by</string>
     <string name="scan_receipt">Skandeer kwitansie</string>
@@ -61,7 +66,6 @@
     <string name="empty_fridge">Jou yskas is leeg</string>
     <string name="add_items_to_get_started">Voeg items by om te begin</string>
 
-    <!-- Categories -->
     <string name="category_vegetables">Groente</string>
     <string name="category_fruits">Vrugte</string>
     <string name="category_dairy">Suiwel</string>
@@ -70,7 +74,6 @@
     <string name="category_snacks">Peuselhappies</string>
     <string name="category_other">Ander</string>
 
-    <!-- Expiry Status -->
     <string name="expiring_soon">Verval binnekort</string>
     <string name="expired">Verval</string>
     <string name="fresh">Vars</string>
@@ -79,7 +82,6 @@
     <string name="expires_today">Verval vandag</string>
     <string name="expires_tomorrow">Verval môre</string>
 
-    <!-- Recipes -->
     <string name="search_recipes">Soek resepte</string>
     <string name="recipes_by_ingredients">Resepte volgens bestanddele</string>
     <string name="saved_recipes">Gestoorde resepte</string>
@@ -93,7 +95,6 @@
     <string name="empty_recipes">Geen resepte gevind nie</string>
     <string name="search_for_recipes">Soek na jou gunsteling resepte</string>
 
-    <!-- Shopping List -->
     <string name="shopping_list">Inkopielys</string>
     <string name="add_item">Voeg item by</string>
     <string name="item_name">Item naam</string>
@@ -103,7 +104,6 @@
     <string name="clear_checked_items">Maak gemerkde items skoon</string>
     <string name="items_checked">%1$d/%2$d gemerk</string>
 
-    <!-- Settings -->
     <string name="settings">Instellings</string>
     <string name="account">Rekening</string>
     <string name="notifications">Kennisgewings</string>
@@ -118,13 +118,17 @@
     <string name="low_stock_alerts">Lae voorraad waarskuwings</string>
     <string name="recipe_suggestions">Resep voorstelle</string>
 
-    <!-- Language Selection -->
     <string name="select_language">Kies taal</string>
     <string name="language_english">Engels</string>
     <string name="language_zulu">Zoeloe</string>
     <string name="language_afrikaans">Afrikaans</string>
+    <string-array name="language_options">
+        <item>Stelselverstek</item>
+        <item>Engels</item>
+        <item>Afrikaans</item>
+        <item>isiZulu</item>
+    </string-array>
 
-    <!-- Analytics -->
     <string name="analytics">Ontleding</string>
     <string name="money_saved">Geld bespaar</string>
     <string name="waste_reduced">Vermorsing verminder</string>
@@ -133,7 +137,6 @@
     <string name="usage_chart">Gebruiksgrafiek</string>
     <string name="category_breakdown">Kategorie verdeling</string>
 
-    <!-- Notifications -->
     <string name="notification_expiring_title">Kos verval binnekort!</string>
     <string name="notification_expiring_body">%1$s verval op %2$s</string>
     <string name="notification_expired_title">Kos het verval!</string>
@@ -143,7 +146,6 @@
     <string name="notification_recipe_title">Resep van die dag!</string>
     <string name="notification_recipe_body">Probeer %s vandag maak</string>
 
-    <!-- Receipt Scanner -->
     <string name="scan_receipt_title">Skandeer kwitansie</string>
     <string name="point_at_receipt">Rig die kamera op die kwitansie</string>
     <string name="scanning">Besig om te skandeer...</string>
@@ -152,7 +154,6 @@
     <string name="add_to_fridge">Voeg by yskas</string>
     <string name="rescan">Skandeer weer</string>
 
-    <!-- Units -->
     <string name="unit_kg">kg</string>
     <string name="unit_g">g</string>
     <string name="unit_l">l</string>
@@ -160,7 +161,6 @@
     <string name="unit_pieces">stuks</string>
     <string name="unit_units">eenhede</string>
 
-    <!-- Common Actions -->
     <string name="add">Voeg by</string>
     <string name="update">Werk op</string>
     <string name="remove">Verwyder</string>
@@ -177,7 +177,6 @@
     <string name="yes">Ja</string>
     <string name="no">Nee</string>
 
-    <!-- Validation Messages -->
     <string name="error_empty_field">Hierdie veld kan nie leeg wees nie</string>
     <string name="error_invalid_email">Ongeldige e-pos</string>
     <string name="error_password_too_short">Wagwoord moet ten minste 6 karakters wees</string>
@@ -185,14 +184,12 @@
     <string name="error_network">Netwerkfout. Kontroleer jou verbinding.</string>
     <string name="error_generic">Iets het verkeerd geloop. Probeer asseblief weer.</string>
 
-    <!-- Sync Status -->
     <string name="syncing">Besig om te sinkroniseer...</string>
     <string name="sync_complete">Sinkronisering voltooi</string>
     <string name="sync_failed">Sinkronisering het misluk</string>
     <string name="offline_mode">Vanlyn modus</string>
     <string name="data_will_sync">Data sal sinkroniseer wanneer aanlyn</string>
 
-    <!-- Dietary Preferences -->
     <string name="dietary_preferences">Dieetvoorkeure</string>
     <string name="vegetarian">Vegetariër</string>
     <string name="vegan">Veganis</string>
@@ -200,20 +197,20 @@
     <string name="dairy_free">Suiwelvry</string>
     <string name="nut_free">Neutvry</string>
 
-    <!-- Family Sync -->
     <string name="family_sync">Gesin sinkronisering</string>
     <string name="invite_family">Nooi gesin</string>
     <string name="family_members">Gesinslede</string>
     <string name="share_fridge">Deel yskas</string>
 
-    <!-- Empty States -->
     <string name="no_results">Geen resultate gevind nie</string>
     <string name="no_internet">Geen internetverbinding</string>
     <string name="try_again_later">Probeer later weer</string>
 
-    <!-- Confirmation Dialogs -->
     <string name="confirm_delete_title">Bevestig verwydering</string>
     <string name="confirm_delete_message">Is jy seker jy wil hierdie item verwyder?</string>
     <string name="confirm_logout_title">Bevestig uitteken</string>
     <string name="confirm_logout_message">Is jy seker jy wil uitteken?</string>
+
+    <string name="back">Terug</string>
+
 </resources>

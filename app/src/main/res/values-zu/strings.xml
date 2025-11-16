@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- isiZulu Translation for FridgeFairy -->
 <resources>
-    <!-- App Name -->
     <string name="app_name">FridgeFairy</string>
 
-    <!-- Authentication -->
     <string name="welcome">Siyakwamukela</string>
     <string name="sign_in">Ngena ngemvume</string>
     <string name="sign_up">Bhalisa</string>
@@ -18,14 +15,24 @@
     <string name="already_have_account">Usunawo i-akhawunti?</string>
     <string name="create_account">Dala i-akhawunti</string>
 
-    <!-- Biometric Authentication -->
+    <string name="biometric_login">Ngena nge-Biometric</string>
     <string name="biometric_title">Qinisekisa ngesithonjana</string>
     <string name="biometric_subtitle">Thinta isenzeli sesithonjana ukuze uqhubeke</string>
     <string name="biometric_description">Sebenzisa isithonjana sakho ukungena ngemvume</string>
     <string name="biometric_cancel">Khansela</string>
     <string name="use_password">Sebenzisa iphasiwedi</string>
+    <string name="enable_biometric">Vumela Ukungena Nge-biometric</string>
+    <string name="biometric_enabled">Ukungena nge-biometric kuvuliwe</string>
+    <string name="biometric_disabled">Ukungena nge-biometric kuvaliwe</string>
+    <string name="biometric_success">Ukungena nge-biometric kuphumelele!</string>
+    <string name="biometric_failed">Ukuqinisekisa nge-biometric kuhlulekile. Zama futhi.</string>
+    <string name="biometric_error">Iphutha lokuqinisekisa: %s</string>
 
-    <!-- Onboarding -->
+    <string name="onboarding_title_short">FridgeFairy</string>
+    <string name="onboarding_title">Pheka Ngokwalokho Onakho</string>
+    <string name="onboarding_tagline">Shintsha okusele kube ukudla okumnandi, okonga imali.</string>
+    <string name="onboarding_about">I-FridgeFairy iphakamisa izindlela zokupheka ngokusekelwe kwizithako osuvele unazo.</string>
+    <string name="onboarding_cta">Qalisa</string>
     <string name="onboarding_welcome_title">Siyakwamukela ku-FridgeFairy</string>
     <string name="onboarding_welcome_desc">Lawula ukudla kwakho, lungisa ukudla okuphelelwa yisikhathi, futhi wenze izindlela zokupheka ezinhle</string>
     <string name="onboarding_smart_tracking_title">Ukulandelela okuhlakaniphile</string>
@@ -38,13 +45,11 @@
     <string name="skip">Yeqa</string>
     <string name="get_started">Qala</string>
 
-    <!-- Main Navigation -->
     <string name="nav_fridge">Isiqandisi</string>
     <string name="nav_recipes">Izindlelo zokupheka</string>
     <string name="nav_shopping">Ukuthenga</string>
     <string name="nav_settings">Izilungiselelo</string>
 
-    <!-- Fridge -->
     <string name="my_fridge">Isiqandisi sami</string>
     <string name="add_food_item">Engeza into yokudla</string>
     <string name="scan_receipt">Skena irisidi</string>
@@ -61,7 +66,6 @@
     <string name="empty_fridge">Isiqandisi sakho asinakho</string>
     <string name="add_items_to_get_started">Engeza izinto ukuze uqale</string>
 
-    <!-- Categories -->
     <string name="category_vegetables">Imifino</string>
     <string name="category_fruits">Izithelo</string>
     <string name="category_dairy">Ubisi nezinto zobisi</string>
@@ -70,7 +74,6 @@
     <string name="category_snacks">Ama-snacks</string>
     <string name="category_other">Okunye</string>
 
-    <!-- Expiry Status -->
     <string name="expiring_soon">Kuphelelwa masinyane</string>
     <string name="expired">Kuphelelwe</string>
     <string name="fresh">Kusha</string>
@@ -79,7 +82,6 @@
     <string name="expires_today">Kuphelelwa namuhla</string>
     <string name="expires_tomorrow">Kuphelelwa kusasa</string>
 
-    <!-- Recipes -->
     <string name="search_recipes">Sesha izindlelo zokupheka</string>
     <string name="recipes_by_ingredients">Izindlelo zokupheka ngezithako</string>
     <string name="saved_recipes">Izindlelo zokupheka ezigciniwe</string>
@@ -91,9 +93,8 @@
     <string name="save_recipe">Gcina indlela yokupheka</string>
     <string name="recipe_saved">Indlela yokupheka igciniwe</string>
     <string name="empty_recipes">Azikho izindlelo zokupheka ezitholiwe</string>
-    <string name="search_for_recipes">Sesha izindlelo zokupheka zakho ezintandekayo</string>
+    <string name="search_for_recipes">Sesha izindlelo zokupheka zakho ezintandokayo</string>
 
-    <!-- Shopping List -->
     <string name="shopping_list">Uhlu lokuthenga</string>
     <string name="add_item">Engeza into</string>
     <string name="item_name">Igama lento</string>
@@ -103,7 +104,6 @@
     <string name="clear_checked_items">Sula izinto ezihlolwe</string>
     <string name="items_checked">%1$d/%2$d izihlolwe</string>
 
-    <!-- Settings -->
     <string name="settings">Izilungiselelo</string>
     <string name="account">I-akhawunti</string>
     <string name="notifications">Izaziso</string>
@@ -118,13 +118,17 @@
     <string name="low_stock_alerts">Izexwayiso zesitokisi esiphansi</string>
     <string name="recipe_suggestions">Iziphakamiso zendlela yokupheka</string>
 
-    <!-- Language Selection -->
     <string name="select_language">Khetha ulimi</string>
     <string name="language_english">IsiNgisi</string>
     <string name="language_zulu">IsiZulu</string>
     <string name="language_afrikaans">IsiBhunu</string>
+    <string-array name="language_options">
+        <item>Okuzenzakalelayo Kwesistimu</item>
+        <item>IsiNgisi</item>
+        <item>IsiBhunu</item>
+        <item>isiZulu</item>
+    </string-array>
 
-    <!-- Analytics -->
     <string name="analytics">Ukuhlaziya</string>
     <string name="money_saved">Imali egciniwe</string>
     <string name="waste_reduced">Ukudla okuphelelwa kunciphisiwe</string>
@@ -133,7 +137,6 @@
     <string name="usage_chart">Ishadi lokusetshenziswa</string>
     <string name="category_breakdown">Ukwahlukaniswa kwesigaba</string>
 
-    <!-- Notifications -->
     <string name="notification_expiring_title">Ukudla kuphelelwa masinyane!</string>
     <string name="notification_expiring_body">%1$s kuphelelwa ngo %2$s</string>
     <string name="notification_expired_title">Ukudla kuphelelwe!</string>
@@ -143,7 +146,6 @@
     <string name="notification_recipe_title">Indlela yokupheka yosuku!</string>
     <string name="notification_recipe_body">Zama ukwenza %s namuhla</string>
 
-    <!-- Receipt Scanner -->
     <string name="scan_receipt_title">Skena irisidi</string>
     <string name="point_at_receipt">Khomba ikhamera yayirisidi</string>
     <string name="scanning">Kuyaskenwa...</string>
@@ -152,7 +154,6 @@
     <string name="add_to_fridge">Engeza esiqandisini</string>
     <string name="rescan">Skena futhi</string>
 
-    <!-- Units -->
     <string name="unit_kg">kg</string>
     <string name="unit_g">g</string>
     <string name="unit_l">l</string>
@@ -160,7 +161,6 @@
     <string name="unit_pieces">izingcezu</string>
     <string name="unit_units">amayunithi</string>
 
-    <!-- Common Actions -->
     <string name="add">Engeza</string>
     <string name="update">Buyekeza</string>
     <string name="remove">Susa</string>
@@ -177,7 +177,6 @@
     <string name="yes">Yebo</string>
     <string name="no">Cha</string>
 
-    <!-- Validation Messages -->
     <string name="error_empty_field">Le nsimu ayikwazi ukushiywa ingenalutho</string>
     <string name="error_invalid_email">I-imeyili engavumelekile</string>
     <string name="error_password_too_short">Iphasiwedi kufanele ibamabhala okungenani ayi-6</string>
@@ -185,14 +184,12 @@
     <string name="error_network">Iphutha lenethiwekhi. Hlola ukuxhumana kwakho.</string>
     <string name="error_generic">Okuthile kuhambe kabi. Zama futhi.</string>
 
-    <!-- Sync Status -->
     <string name="syncing">Kuyavumelanisa...</string>
     <string name="sync_complete">Ukuvumelanisa kuqediwe</string>
     <string name="sync_failed">Ukuvumelanisa kuhlulekile</string>
     <string name="offline_mode">Imodi engaxhunyiwe</string>
     <string name="data_will_sync">Idatha ivumelaniswa uma uxhunywe</string>
 
-    <!-- Dietary Preferences -->
     <string name="dietary_preferences">Okukhethwa kokudla</string>
     <string name="vegetarian">Ongadli nyama</string>
     <string name="vegan">I-Vegan</string>
@@ -200,20 +197,20 @@
     <string name="dairy_free">Engenalo ubisi</string>
     <string name="nut_free">Engenalo amantongomane</string>
 
-    <!-- Family Sync -->
     <string name="family_sync">Ukuvumelanisa komndeni</string>
     <string name="invite_family">Mema umndeni</string>
     <string name="family_members">Amalungu omndeni</string>
     <string name="share_fridge">Abelana ngesiqandisi</string>
 
-    <!-- Empty States -->
     <string name="no_results">Ayikho imiphumela etholiwe</string>
     <string name="no_internet">Akukho ukuxhumana kwe-inthanethi</string>
     <string name="try_again_later">Zama futhi kamuva</string>
 
-    <!-- Confirmation Dialogs -->
     <string name="confirm_delete_title">Qinisekisa ukususa</string>
     <string name="confirm_delete_message">Uqinisekile ukuthi ufuna ukususa le nto?</string>
     <string name="confirm_logout_title">Qinisekisa ukuphuma</string>
     <string name="confirm_logout_message">Uqinisekile ukuthi ufuna ukuphuma?</string>
+
+    <string name="back">Emuva</string>
+
 </resources>

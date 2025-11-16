@@ -131,7 +131,8 @@
     <string name="settings">Settings</string>
     <string name="account">Account</string>
     <string name="notifications">Notifications</string>
-    <string name="language">Language</string> <string name="theme">Theme</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
     <string name="about">About</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="terms_of_service">Terms of Service</string>
@@ -153,8 +154,8 @@
     <string name="savings_this_month">Savings This Month</string>
     <string name="usage_chart">Usage Chart</string>
     <string name="category_breakdown">Category Breakdown</string>
-    <string name="currency_format">R%.2f</string>
-    <string name="kg_format">%.1f kg</string>
+    <string name="currency_format" translatable="false">R%.2f</string>
+    <string name="kg_format" translatable="false">%.1f kg</string>
 
     <string name="notification_expiring_title">Food expiring soon!</string>
     <string name="notification_expiring_body">%1$s expires on %2$s</string>
@@ -165,9 +166,9 @@
     <string name="notification_recipe_title">Recipe of the day!</string>
     <string name="notification_recipe_body">Try making %s today</string>
 
-    <string name="default_notification_channel_id">fridgefairy_default</string>
-    <string name="default_notification_channel_name">FridgeFairy Notifications</string>
-    <string name="default_notification_channel_description">General notifications from FridgeFairy</string>
+    <string name="default_notification_channel_id" translatable="false">fridgefairy_default</string>
+    <string name="default_notification_channel_name" translatable="false">FridgeFairy Notifications</string>
+    <string name="default_notification_channel_description" translatable="false">General notifications from FridgeFairy</string>
 
     <string name="scan_receipt_title">Scan Receipt</string>
     <string name="point_at_receipt">Point the camera at a receipt</string>
@@ -213,7 +214,7 @@
     <string name="offline_mode">Offline mode</string>
     <string name="data_will_sync">Data will sync when online</string>
 
-    Choose a language    <string name="dietary_preferences">Dietary Preferences</string>
+    <string name="dietary_preferences">Dietary Preferences</string>
     <string name="vegetarian">Vegetarian</string>
     <string name="vegan">Vegan</string>
     <string name="gluten_free">Gluten-Free</string>
