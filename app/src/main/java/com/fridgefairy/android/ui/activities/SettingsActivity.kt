@@ -1,9 +1,7 @@
-// Start of file: SettingsActivity.kt
-// This activity allows the user to change app settings such as notifications, theme, diet, and intolerances.
-// It loads settings from shared preferences and updates them based on user interaction.
 package com.fridgefairy.android.ui.activities
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
@@ -14,21 +12,19 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import com.fridgefairy.android.databinding.ActivitySettingsBinding
 import com.fridgefairy.android.utils.BiometricHelper
-// *** NEW: Import the helper ***
 import com.fridgefairy.android.utils.SettingsHelper
+import com.google.firebase.auth.FirebaseAuth
 
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var mAuth: FirebaseAuth
 
     companion object {
         private const val PREFS_NAME = "FridgeFairyPrefs"
         private const val KEY_NOTIFICATIONS = "notifications_enabled"
         private const val KEY_THEME = "app_theme"
-        // *** MOVED to SettingsHelper ***
-        // const val KEY_DIET = "diet_preference"
-        // const val KEY_INTOLERANCES = "intolerances"
         private const val KEY_LANGUAGE = "app_language"
     }
 
@@ -37,7 +33,8 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set up toolbar
+        mAuth = FirebaseAuth.getInstance()
+
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Settings"
@@ -79,22 +76,17 @@ class SettingsActivity : AppCompatActivity() {
         }
         binding.spinnerLanguage.setSelection(languagePosition)
 
-        // *** MODIFIED: Use the key from SettingsHelper ***
         val currentDiet = sharedPreferences.getInt(SettingsHelper.KEY_DIET, 0)
         binding.spinnerDiet.setSelection(currentDiet)
 
-        // Load intolerances checkboxes
-        // *** MODIFIED: Use the key from SettingsHelper ***
         val intolerances = sharedPreferences.getString(SettingsHelper.KEY_INTOLERANCES, "") ?: ""
         binding.checkboxGluten.isChecked = intolerances.contains("gluten")
         binding.checkboxDairy.isChecked = intolerances.contains("dairy")
         binding.checkboxEgg.isChecked = intolerances.contains("egg")
         binding.checkboxPeanut.isChecked = intolerances.contains("peanut")
 
-        // Load biometric setting
         binding.switchBiometric.isChecked = BiometricHelper.isBiometricEnabled(this)
 
-        // Disable biometric switch if not available
         if (!BiometricHelper.isBiometricAvailable(this)) {
             binding.switchBiometric.isEnabled = false
             binding.textBiometricStatus.text = BiometricHelper.getBiometricStatusMessage(this)
@@ -122,7 +114,6 @@ class SettingsActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        // Language Spinner Listener
         binding.spinnerLanguage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
                 val languageCode = when (position) {
@@ -143,14 +134,12 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.spinnerDiet.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
-                // *** MODIFIED: Use the key from SettingsHelper ***
                 sharedPreferences.edit().putInt(SettingsHelper.KEY_DIET, position).apply()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        // Save intolerances when checkboxes change
         val intoleranceListener = { _: Any, _: Boolean ->
             saveIntolerances()
         }
@@ -160,12 +149,18 @@ class SettingsActivity : AppCompatActivity() {
         binding.checkboxEgg.setOnCheckedChangeListener(intoleranceListener)
         binding.checkboxPeanut.setOnCheckedChangeListener(intoleranceListener)
 
-        // Biometric toggle listener
         binding.switchBiometric.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 if (BiometricHelper.isBiometricAvailable(this)) {
-                    BiometricHelper.setBiometricEnabled(this, true)
-                    Toast.makeText(this, "Biometric login enabled", Toast.LENGTH_SHORT).show()
+                    val email = mAuth.currentUser?.email
+                    if (email != null) {
+                        BiometricHelper.saveUserEmail(this, email)
+                        BiometricHelper.setBiometricEnabled(this, true)
+                        Toast.makeText(this, "Biometric login enabled", Toast.LENGTH_SHORT).show()
+                    } else {
+                        binding.switchBiometric.isChecked = false
+                        Toast.makeText(this, "Error: User email not found", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     binding.switchBiometric.isChecked = false
                     Toast.makeText(this, BiometricHelper.getBiometricStatusMessage(this), Toast.LENGTH_LONG).show()
@@ -175,6 +170,19 @@ class SettingsActivity : AppCompatActivity() {
                 BiometricHelper.clearBiometricData(this)
                 Toast.makeText(this, "Biometric login disabled", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        // --- SIGN OUT BUTTON LISTENER (FIXED) ---
+        binding.buttonLogout.setOnClickListener {
+            mAuth.signOut()
+            BiometricHelper.clearBiometricData(this)
+            Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show()
+
+            val intent = Intent(this, AuthActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            startActivity(intent)
+            finish()
         }
     }
 
@@ -187,7 +195,6 @@ class SettingsActivity : AppCompatActivity() {
         if (binding.checkboxPeanut.isChecked) intolerances.add("peanut")
 
         val intolerancesString = intolerances.joinToString(",")
-        // *** MODIFIED: Use the key from SettingsHelper ***
         sharedPreferences.edit().putString(SettingsHelper.KEY_INTOLERANCES, intolerancesString).apply()
     }
 
@@ -211,9 +218,6 @@ class SettingsActivity : AppCompatActivity() {
         AppCompatDelegate.setApplicationLocales(localeList)
     }
 
-    // *** REMOVED getDietPreference and getIntolerances functions ***
-    // (They are now in SettingsHelper.kt)
-
     // Handles menu item selections
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -225,4 +229,3 @@ class SettingsActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
-// End of file: SettingsActivity.kt
