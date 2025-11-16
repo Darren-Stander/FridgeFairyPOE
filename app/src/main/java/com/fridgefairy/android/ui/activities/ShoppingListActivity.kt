@@ -1,12 +1,11 @@
-// Start of file: ShoppingListActivity.kt
-// This activity displays the user's shopping list and allows adding, removing, and editing items.
-// It uses a RecyclerView and ShoppingListAdapter to show the list, and interacts with ShoppingListViewModel for data operations.
 package com.fridgefairy.android.ui.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -28,7 +27,6 @@ class ShoppingListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityShoppingListBinding
     private lateinit var adapter: ShoppingListAdapter
 
-    // ViewModel for shopping list data
     private val viewModel: ShoppingListViewModel by viewModels {
         ShoppingListViewModelFactory(
             ShoppingListRepository(
@@ -37,17 +35,26 @@ class ShoppingListActivity : AppCompatActivity() {
         )
     }
 
+    private val scannerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val scannedText = result.data?.getStringExtra("SCANNED_TEXT")
+            if (!scannedText.isNullOrBlank()) {
+                showAddItemDialog(scannedText)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityShoppingListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set up toolbar
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Shopping List"
 
-        // Handle toolbar back arrow click
         binding.toolbar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
@@ -88,7 +95,8 @@ class ShoppingListActivity : AppCompatActivity() {
         }
 
         binding.buttonOpenScanner.setOnClickListener {
-            startActivity(Intent(this, ReceiptScannerActivity::class.java))
+            val intent = Intent(this, ReceiptScannerActivity::class.java)
+            scannerLauncher.launch(intent)
         }
     }
 
@@ -105,8 +113,8 @@ class ShoppingListActivity : AppCompatActivity() {
         }
     }
 
-    private fun showAddItemDialog() {
-        val dialog = AddShoppingItemDialogFragment().apply {
+    private fun showAddItemDialog(prefilledName: String? = null) {
+        val dialog = AddShoppingItemDialogFragment.newInstance(prefilledName).apply {
             onItemAdded = { item ->
                 viewModel.insert(item)
                 Snackbar.make(binding.root, "${item.name} added to list", Snackbar.LENGTH_SHORT).show()
@@ -168,4 +176,3 @@ class ShoppingListActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
-// End of file: ShoppingListActivity.kt

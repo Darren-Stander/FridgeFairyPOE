@@ -1,6 +1,7 @@
 package com.fridgefairy.android.ui.activities
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -52,25 +53,21 @@ class ReceiptScannerActivity : AppCompatActivity() {
         binding = ActivityReceiptScannerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // ---- Back handling: toolbar if present, else custom ImageButton ----
         val toolbar = findViewById<MaterialToolbar?>(R.id.toolbar)
         if (toolbar != null) {
             setSupportActionBar(toolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             toolbar.setNavigationOnClickListener { navigateToShoppingList() }
         } else {
-            // If you replaced the toolbar with a header like in activity_register
             findViewById<ImageButton?>(R.id.button_back)?.setOnClickListener {
                 navigateToShoppingList()
             }
         }
 
-        // System back -> go to Shopping List
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() = navigateToShoppingList()
         })
 
-        // Create PreviewView at runtime to avoid Layout Editor crashes
         previewView = PreviewView(this).apply {
             layoutParams = CoordinatorLayout.LayoutParams(
                 CoordinatorLayout.LayoutParams.MATCH_PARENT,
@@ -83,6 +80,13 @@ class ReceiptScannerActivity : AppCompatActivity() {
         binding.btnModeOcr.setOnClickListener { switchMode(Mode.OCR) }
         binding.btnModeBarcode.setOnClickListener { switchMode(Mode.BARCODE) }
         binding.textMode.text = "Mode: OCR"
+
+        binding.textResult.setOnClickListener {
+            val currentText = binding.textResult.text.toString()
+            if (currentText.isNotBlank() && currentText != "No text detected yet…") {
+                returnResult(currentText)
+            }
+        }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
             == PackageManager.PERMISSION_GRANTED
@@ -121,21 +125,17 @@ class ReceiptScannerActivity : AppCompatActivity() {
     }
 
     private fun bindUseCases() {
-        val provider = cameraProvider ?: return
-        provider.unbindAll()
-
-        val preview = Preview.Builder().build().also {
-            it.setSurfaceProvider(previewView.surfaceProvider)
-        }
-
         bindAnalysisUseCase()
+    }
 
-        provider.bindToLifecycle(
-            this,
-            CameraSelector.DEFAULT_BACK_CAMERA,
-            preview,
-            analysis
-        )
+    private fun returnResult(scannedText: String) {
+        if (scannedText.isBlank()) return
+
+        val resultIntent = Intent().apply {
+            putExtra("SCANNED_TEXT", scannedText)
+        }
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
     }
 
     private fun bindAnalysisUseCase() {
@@ -158,8 +158,8 @@ class ReceiptScannerActivity : AppCompatActivity() {
         }
 
         val onBarcodeResult: (String) -> Unit = { value ->
-            latestText = value
             binding.textResult.text = value
+            returnResult(value)
         }
 
         when (mode) {

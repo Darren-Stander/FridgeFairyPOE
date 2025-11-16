@@ -1,6 +1,3 @@
-// Start of file: AddShoppingItemDialogFragment.kt
-// This fragment displays a dialog for adding a new shopping list item.
-// It collects user input and passes the new ShoppingListItem to the parent activity via a callback.
 package com.fridgefairy.android.ui.fragments
 
 import android.app.AlertDialog
@@ -13,8 +10,19 @@ import com.fridgefairy.android.data.entities.ShoppingListItem
 
 class AddShoppingItemDialogFragment : DialogFragment() {
 
-    // Callback for when a shopping item is added
     var onItemAdded: ((ShoppingListItem) -> Unit)? = null
+
+    companion object {
+        private const val ARG_ITEM_NAME = "ARG_ITEM_NAME"
+
+        fun newInstance(itemName: String? = null): AddShoppingItemDialogFragment {
+            val fragment = AddShoppingItemDialogFragment()
+            val args = Bundle()
+            args.putString(ARG_ITEM_NAME, itemName)
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireActivity())
@@ -25,9 +33,16 @@ class AddShoppingItemDialogFragment : DialogFragment() {
         val editTextCategory = view.findViewById<EditText>(R.id.edit_text_category)
         val editTextQuantity = view.findViewById<EditText>(R.id.edit_text_quantity)
 
+        val prefilledName = arguments?.getString(ARG_ITEM_NAME)
+        if (prefilledName != null) {
+            editTextName.setText(prefilledName)
+            editTextName.setSelection(prefilledName.length)
+            editTextQuantity.requestFocus()
+        }
+
         builder.setView(view)
-            .setTitle(R.string.add_item) // <-- UPDATED (uses "Add Item" string)
-            .setPositiveButton(R.string.add) { dialog, id -> // <-- UPDATED
+            .setTitle(R.string.add_item)
+            .setPositiveButton(R.string.add) { dialog, id ->
                 val name = editTextName.text.toString()
                 val category = editTextCategory.text.toString()
                 val quantity = editTextQuantity.text.toString().toIntOrNull() ?: 1
@@ -42,11 +57,10 @@ class AddShoppingItemDialogFragment : DialogFragment() {
                     onItemAdded?.invoke(item)
                 }
             }
-            .setNegativeButton(R.string.cancel) { dialog, id -> // <-- UPDATED
+            .setNegativeButton(R.string.cancel) { dialog, id ->
                 dialog.dismiss()
             }
 
         return builder.create()
     }
 }
-// End of file: AddShoppingItemDialogFragment.kt
