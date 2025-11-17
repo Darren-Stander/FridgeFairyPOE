@@ -1,3 +1,7 @@
+// This file defines a CameraX ImageAnalysis.Analyzer for barcode scanning.
+// It uses Google ML Kit's BarcodeScanning client to process camera frames
+// and returns the value of the first detected barcode via a callback.
+
 package com.fridgefairy.android.ui.ml
 
 import androidx.camera.core.ExperimentalGetImage

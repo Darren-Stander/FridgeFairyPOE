@@ -1,3 +1,7 @@
+// This file defines a DialogFragment for adding a new shopping list item.
+// It displays a dialog with input fields, supports pre-filling the item name
+// (from the scanner), and uses a callback (onItemAdded) to pass the new item back.
+
 package com.fridgefairy.android.ui.fragments
 
 import android.app.AlertDialog

@@ -14,7 +14,7 @@ import java.util.Calendar
 
 class AddFoodItemDialogFragment : DialogFragment() {
 
-    // Callback for when a food item is added
+
     var onFoodItemAdded: ((FoodItem) -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -27,21 +27,21 @@ class AddFoodItemDialogFragment : DialogFragment() {
         val editTextQuantity = view.findViewById<EditText>(R.id.edit_text_quantity)
 
         builder.setView(view)
-            .setTitle(R.string.add_food_item) // <-- UPDATED
-            .setPositiveButton(R.string.add) { dialog, id -> // <-- UPDATED
+            .setTitle(R.string.add_food_item)
+            .setPositiveButton(R.string.add) { dialog, id ->
                 val name = editTextName.text.toString()
                 val category = editTextCategory.text.toString()
                 val quantity = editTextQuantity.text.toString().toIntOrNull() ?: 1
 
                 if (name.isNotBlank() && category.isNotBlank()) {
-                    // Set expiration to 7 days from now by default
+
                     val calendar = Calendar.getInstance()
                     calendar.add(Calendar.DAY_OF_YEAR, 7)
                     val expirationDate = calendar.timeInMillis
 
-                    // NOTE: userId will be set by MainActivity before inserting
+
                     val foodItem = FoodItem(
-                        userId = "", // Placeholder - will be replaced in MainActivity
+                        userId = "",
                         name = name,
                         category = category,
                         expirationDate = expirationDate,
@@ -51,7 +51,7 @@ class AddFoodItemDialogFragment : DialogFragment() {
                     onFoodItemAdded?.invoke(foodItem)
                 }
             }
-            .setNegativeButton(R.string.cancel) { dialog, id -> // <-- UPDATED
+            .setNegativeButton(R.string.cancel) { dialog, id ->
                 dialog.dismiss()
             }
 

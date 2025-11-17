@@ -1,3 +1,7 @@
+// This file defines the ReceiptScannerActivity, which uses CameraX for a live preview.
+// It orchestrates image analysis for either OCR (text recognition) or Barcode scanning
+// and returns the detected result to the previous activity.
+
 package com.fridgefairy.android.ui.activities
 
 import android.Manifest

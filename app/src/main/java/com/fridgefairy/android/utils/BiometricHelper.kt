@@ -1,3 +1,9 @@
+// This file provides a singleton helper object for all biometric authentication logic.
+// It handles checking hardware availability, managing user preferences in SharedPreferences,
+// saving/clearing login credentials, and displaying the BiometricPrompt.
+
+
+
 package com.fridgefairy.android.utils
 
 import android.content.Context
@@ -17,9 +23,7 @@ object BiometricHelper {
     private const val PREF_USER_EMAIL = "user_email_encrypted"
     private const val PREF_AUTO_LOGIN_TOKEN = "auto_login_token"
 
-    /**
-     * Check if biometric authentication is available on this device
-     */
+
     fun isBiometricAvailable(context: Context): Boolean {
         val biometricManager = BiometricManager.from(context)
         return when (biometricManager.canAuthenticate(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)) {
@@ -31,65 +35,48 @@ object BiometricHelper {
         }
     }
 
-    /**
-     * Check if biometric authentication is enabled in app settings
-     */
+
     fun isBiometricEnabled(context: Context): Boolean {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         return prefs.getBoolean(PREF_BIOMETRIC_ENABLED, false)
     }
 
-    /**
-     * Enable or disable biometric authentication
-     */
+
     fun setBiometricEnabled(context: Context, enabled: Boolean) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         prefs.edit().putBoolean(PREF_BIOMETRIC_ENABLED, enabled).apply()
     }
 
-    /**
-     * Save user email for biometric login
-     */
+
     fun saveUserEmail(context: Context, email: String) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         prefs.edit().putString(PREF_USER_EMAIL, email).apply()
     }
 
-    /**
-     * Get saved user email
-     */
+
     fun getSavedUserEmail(context: Context): String? {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         return prefs.getString(PREF_USER_EMAIL, null)
     }
 
-    /**
-     * Save auto-login token (stored when user successfully logs in with biometric enabled)
-     * This allows automatic login after biometric authentication
-     */
+
     fun saveAutoLoginToken(context: Context, token: String) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         prefs.edit().putString(PREF_AUTO_LOGIN_TOKEN, token).apply()
     }
 
-    /**
-     * Get saved auto-login token
-     */
+
     fun getAutoLoginToken(context: Context): String? {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         return prefs.getString(PREF_AUTO_LOGIN_TOKEN, null)
     }
 
-    /**
-     * Check if auto-login is available (has token)
-     */
+
     fun hasAutoLoginToken(context: Context): Boolean {
         return getAutoLoginToken(context) != null
     }
 
-    /**
-     * Clear saved biometric data (on logout)
-     */
+
     fun clearBiometricData(context: Context) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         prefs.edit().apply {
@@ -100,9 +87,7 @@ object BiometricHelper {
         }
     }
 
-    /**
-     * Show biometric authentication prompt
-     */
+
     fun showBiometricPrompt(
         activity: FragmentActivity,
         title: String = "Biometric Authentication",
@@ -132,8 +117,7 @@ object BiometricHelper {
                 }
             })
 
-        // Note: When using DEVICE_CREDENTIAL, negative button is not allowed
-        // The system provides a cancel button automatically
+
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle(title)
             .setSubtitle(subtitle)
@@ -143,9 +127,7 @@ object BiometricHelper {
         biometricPrompt.authenticate(promptInfo)
     }
 
-    /**
-     * Get user-friendly message about biometric availability
-     */
+
     fun getBiometricStatusMessage(context: Context): String {
         val biometricManager = BiometricManager.from(context)
         return when (biometricManager.canAuthenticate(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)) {

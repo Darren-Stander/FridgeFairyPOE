@@ -1,3 +1,8 @@
+// defines the main Room database class for the application.
+// lists all entities (tables), sets the database version
+// provides abstract methods to access each Data Access Object (DAO).
+
+
 package com.fridgefairy.android.data
 
 import android.content.Context
@@ -14,7 +19,7 @@ import com.fridgefairy.android.data.dao.ShoppingListDao
 
 @Database(
     entities = [FoodItem::class, Recipe::class, ShoppingListItem::class],
-    version = 3,  // INCREMENTED VERSION
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -34,7 +39,7 @@ abstract class FridgeFairyDatabase : RoomDatabase() {
                     FridgeFairyDatabase::class.java,
                     "fridge_fairy_database"
                 )
-                    .fallbackToDestructiveMigration()  // ADDED THIS FOR VERSION CHANGE
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance

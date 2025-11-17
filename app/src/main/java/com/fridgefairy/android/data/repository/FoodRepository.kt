@@ -1,3 +1,7 @@
+// defines the FoodRepository class, which abstracts the data source for food items.
+// manages data operations between the FoodDao (local Room database)
+// automatically scopes operations to the currently logged-in Firebase user.
+
 package com.fridgefairy.android.data.repository
 
 import androidx.lifecycle.LiveData

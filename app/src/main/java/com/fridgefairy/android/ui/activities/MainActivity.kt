@@ -1,3 +1,7 @@
+// defines the MainActivity, the main screen of the app after login.
+// displays the user's list of food items from the fridge, handles adding/deleting items,
+// initialides the background data sync worker.
+
 package com.fridgefairy.android.ui.activities
 
 import android.content.Intent
@@ -25,10 +29,7 @@ import com.fridgefairy.android.workers.SyncWorker
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
-/**
- * Main Activity - Displays fridge items
- * Includes WorkManager sync and Analytics navigation
- */
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        // Check if user is logged in
+
         val currentUser = auth.currentUser
         if (currentUser == null) {
             startActivity(Intent(this, AuthActivity::class.java))
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         currentUserId = currentUser.uid
         viewModel.setUserId(currentUserId!!)
 
-        // Initialize WorkManager (MANDATORY FEATURE)
+
         initializeWorkManager()
 
         setupRecyclerView()
@@ -72,10 +73,7 @@ class MainActivity : AppCompatActivity() {
         setupSwipeToDelete()
     }
 
-    /**
-     * Initialize WorkManager for automatic sync
-     * MANDATORY FEATURE: Offline Mode with Sync
-     */
+
     private fun initializeWorkManager() {
         SyncWorker.scheduleSync(this)
         Snackbar.make(
@@ -126,7 +124,7 @@ class MainActivity : AppCompatActivity() {
                     Snackbar.LENGTH_SHORT
                 ).show()
 
-                // Trigger immediate sync after adding item
+
                 SyncWorker.syncNow(this@MainActivity)
             }
         }
@@ -212,12 +210,12 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.action_analytics -> {
-                // ADDITIONAL FEATURE: Analytics Dashboard
+
                 startActivity(Intent(this, AnalyticsActivity::class.java))
                 true
             }
             R.id.action_refresh -> {
-                // Manual sync trigger
+
                 SyncWorker.syncNow(this)
                 Snackbar.make(
                     binding.root,

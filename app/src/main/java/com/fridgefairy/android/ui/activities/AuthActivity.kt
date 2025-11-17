@@ -1,5 +1,5 @@
 // Start of file: AuthActivity.kt
-// This activity handles user authentication, including email/password and Google sign-in.
+// activity handles user authentication, including email/password and Google sign-in.
 // It uses FirebaseAuth and GoogleSignInClient for authentication and navigates to the main app on success.
 package com.fridgefairy.android.ui.activities
 
@@ -25,7 +25,7 @@ class AuthActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
-    // Launcher for Google sign-in intent
+
     private val googleSignInLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
@@ -45,7 +45,7 @@ class AuthActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        // Configure Google Sign-In
+
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -61,7 +61,7 @@ class AuthActivity : AppCompatActivity() {
         if (::firebaseAuth.isInitialized && firebaseAuth.currentUser != null) {
             navigateToMain()
         } else {
-            // Validate biometric data (clear only if different user)
+
             validateBiometricData()
         }
     }
@@ -75,26 +75,25 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun validateBiometricData() {
-        // Only clear biometric data if a DIFFERENT user is logged in
-        // Do NOT clear on logout - user should be able to use biometric to login again
+
         val savedEmail = BiometricHelper.getSavedUserEmail(this)
         val currentUser = firebaseAuth.currentUser
 
         if (savedEmail != null && currentUser?.email != null && savedEmail != currentUser.email) {
-            // Different user is logged in - clear old biometric data
+
             Log.d("AuthActivity", "Different user detected: saved=$savedEmail, current=${currentUser.email}")
             Log.d("AuthActivity", "Clearing biometric data for different user")
             BiometricHelper.clearBiometricData(this)
-            // Refresh the button visibility
+
             setupBiometricButton()
         } else if (savedEmail != null && currentUser == null) {
-            // User logged out but biometric data exists - this is NORMAL, keep it!
+
             Log.d("AuthActivity", "User logged out, keeping biometric data for: $savedEmail")
         }
     }
 
     private fun setupBiometricButton() {
-        // Check if biometrics are available and user has previously logged in
+
         val biometricAvailable = BiometricHelper.isBiometricAvailable(this)
         val biometricEnabled = BiometricHelper.isBiometricEnabled(this)
         val savedEmail = BiometricHelper.getSavedUserEmail(this)
@@ -105,8 +104,7 @@ class AuthActivity : AppCompatActivity() {
         Log.d("AuthActivity", "Saved email: $savedEmail")
         Log.d("AuthActivity", "Has auto-login token: $hasToken")
 
-        // Show biometric button if biometrics are available, enabled, and email saved
-        // Token is optional - if no token, user will need to enter password once
+
         if (biometricAvailable && biometricEnabled && !savedEmail.isNullOrEmpty()) {
             binding.buttonBiometricLogin.visibility = android.view.View.VISIBLE
             binding.buttonBiometricLogin.setOnClickListener {
@@ -116,7 +114,7 @@ class AuthActivity : AppCompatActivity() {
         } else {
             binding.buttonBiometricLogin.visibility = android.view.View.GONE
 
-            // Log reason for not showing button
+
             if (!biometricAvailable) {
                 Log.d("AuthActivity", "Biometric not available: ${BiometricHelper.getBiometricStatusMessage(this)}")
             } else if (!biometricEnabled) {
@@ -131,7 +129,7 @@ class AuthActivity : AppCompatActivity() {
         val savedEmail = BiometricHelper.getSavedUserEmail(this)
         val savedToken = BiometricHelper.getAutoLoginToken(this)
 
-        // Double-check that saved email exists
+
         if (savedEmail.isNullOrEmpty()) {
             Log.e("AuthActivity", "loginWithBiometric called but no saved email")
             BiometricHelper.clearBiometricData(this)
@@ -185,7 +183,7 @@ class AuthActivity : AppCompatActivity() {
                 Log.e("AuthActivity", "Automatic biometric login failed: ${e.message}")
                 binding.buttonBiometricLogin.isEnabled = true
 
-                // Clear invalid credentials
+
                 BiometricHelper.clearBiometricData(this)
                 setupBiometricButton()
 
@@ -194,7 +192,7 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() = with(binding) {
-        // Go to the dedicated register screen
+
         buttonRegister.setOnClickListener {
             startActivity(Intent(this@AuthActivity, RegisterActivity::class.java))
         }
@@ -213,18 +211,17 @@ class AuthActivity : AppCompatActivity() {
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
-                // Only save credentials for biometric if it's enabled AND matches the saved email (or no saved email)
+
                 val savedEmail = BiometricHelper.getSavedUserEmail(this)
                 val biometricEnabled = BiometricHelper.isBiometricEnabled(this)
 
                 if (biometricEnabled && (savedEmail == null || savedEmail == email)) {
-                    // User has biometric enabled and is logging in with the correct account
-                    // Save both email and password for automatic login
+
                     BiometricHelper.saveUserEmail(this, email)
                     BiometricHelper.saveAutoLoginToken(this, password)
                     Log.d("AuthActivity", "Saved credentials for biometric auto-login: $email")
                 } else if (biometricEnabled && savedEmail != email) {
-                    // Different user logging in - clear old biometric data
+
                     Log.d("AuthActivity", "Different user detected, clearing biometric data")
                     BiometricHelper.clearBiometricData(this)
                 }
@@ -254,19 +251,18 @@ class AuthActivity : AppCompatActivity() {
         firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Only save email for biometric if it's enabled AND matches the saved email (or no saved email)
+
                     val email = firebaseAuth.currentUser?.email
                     val savedEmail = BiometricHelper.getSavedUserEmail(this)
                     val biometricEnabled = BiometricHelper.isBiometricEnabled(this)
 
                     if (email != null && biometricEnabled && (savedEmail == null || savedEmail == email)) {
-                        // User has biometric enabled and is logging in with the correct account
-                        // For Google Sign-In, save the idToken for auto-login
+
                         BiometricHelper.saveUserEmail(this, email)
                         BiometricHelper.saveAutoLoginToken(this, idToken)
                         Log.d("AuthActivity", "Saved Google credentials for biometric auto-login: $email")
                     } else if (email != null && biometricEnabled && savedEmail != email) {
-                        // Different user logging in - clear old biometric data
+
                         Log.d("AuthActivity", "Different user detected, clearing biometric data")
                         BiometricHelper.clearBiometricData(this)
                     }

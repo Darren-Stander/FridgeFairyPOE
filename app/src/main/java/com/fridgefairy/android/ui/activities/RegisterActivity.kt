@@ -22,18 +22,18 @@ class RegisterActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        // Back button to return to previous screen
+
         binding.buttonBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        // Create account button
+
         binding.buttonCreateAccount.setOnClickListener { doRegister() }
-        // Link to login screen
-        binding.textGoToLogin.setOnClickListener { finish() } // back to login
+
+        binding.textGoToLogin.setOnClickListener { finish() }
     }
 
-    // Handles registration logic and input validation
+
     private fun doRegister() {
         val email = binding.editTextEmail.text.toString().trim()
         val password = binding.editTextPassword.text.toString()
@@ -54,7 +54,7 @@ class RegisterActivity : AppCompatActivity() {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener {
                 toast("Registration successful!")
-                // Go straight to your app’s main screen
+
                 val i = Intent(this, MainActivity::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(i)
@@ -75,7 +75,7 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
 
-    // Shows a toast message
+
     private fun toast(msg: String) =
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }

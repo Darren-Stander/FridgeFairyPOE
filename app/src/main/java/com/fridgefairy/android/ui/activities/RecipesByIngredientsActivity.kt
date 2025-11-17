@@ -31,7 +31,7 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecipesByIngredientsBinding
     private lateinit var recipeAdapter: RecipeAdapter
 
-    // ViewModel for fridge items
+
     private val fridgeViewModel: FridgeViewModel by viewModels {
         FridgeViewModelFactory(
             FoodRepository(
@@ -40,7 +40,7 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
         )
     }
 
-    // ViewModel for recipes
+
     private val recipeViewModel: RecipeViewModel by viewModels {
         RecipeViewModelFactory(
             RecipeRepository(
@@ -54,7 +54,7 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
         binding = ActivityRecipesByIngredientsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set up toolbar
+
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Recipes from Your Fridge"
@@ -65,13 +65,13 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
         loadFridgeIngredients()
     }
 
-    // *** NEW: Add onResume to update the chip every time the screen is shown ***
+
     override fun onResume() {
         super.onResume()
         updateDietChip()
     }
 
-    // *** NEW: Function to show/hide the diet filter chip ***
+
     private fun updateDietChip() {
         val diet = SettingsHelper.getDietPreference(this)
         if (diet != null) {
@@ -80,7 +80,7 @@ class RecipesByIngredientsActivity : AppCompatActivity() {
             }
             binding.chipDietFilter.visibility = View.VISIBLE
 
-            // Set a click listener to inform the user how to remove it
+
             binding.chipDietFilter.setOnCloseIconClickListener {
                 Toast.makeText(this, "To change your diet, go to Settings", Toast.LENGTH_LONG).show()
             }

@@ -16,22 +16,22 @@ class OnboardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Access shared preferences to check onboarding status
+
         val prefs = getSharedPreferences("FridgeFairyPrefs", Context.MODE_PRIVATE)
         if (prefs.getBoolean("onboarding_complete", false)) {
-            // If onboarding is complete, go to AuthActivity
+
             startActivity(Intent(this, AuthActivity::class.java))
             finish()
             return
         }
 
-        // Set the onboarding layout
+
         setContentView(R.layout.activity_onboarding)
 
-        // Set up the Get Started button
+
         val btn = findViewById<MaterialButton>(R.id.btnGetStarted)
         btn.setOnClickListener {
-            // Mark onboarding as complete and go to AuthActivity
+
             prefs.edit().putBoolean("onboarding_complete", true).apply()
             startActivity(Intent(this, AuthActivity::class.java))
             finish()

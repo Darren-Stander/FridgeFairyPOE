@@ -1,3 +1,8 @@
+// defines the Data Access Object (DAO) for FoodItem entities.
+//  includes Room annotations for database operations like insert, update, delete
+// queries to get food items, filtered by user ID and expiration.
+
+
 package com.fridgefairy.android.data.dao
 
 import androidx.lifecycle.LiveData

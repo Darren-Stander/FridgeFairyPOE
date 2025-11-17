@@ -1,3 +1,6 @@
+// defines the data class for the Recipe entity, representing a table in the Room database.
+// holds detailed information about a recipe, including a list of its ingredients.
+
 package com.fridgefairy.android.data.entities
 
 import androidx.room.Entity
@@ -11,7 +14,7 @@ import androidx.room.Index
 data class Recipe(
     @PrimaryKey
     val id: Int,
-    val userId: String, // Associate with Firebase user ID
+    val userId: String,
     val title: String,
     val image: String?,
     val readyInMinutes: Int,

@@ -1,3 +1,7 @@
+// This file defines the RecyclerView adapter for displaying FoodItem objects.
+// It uses ListAdapter for efficient updates and binds FoodItem data to the
+// item_food.xml layout, including logic for coloring based on expiration status.
+
 package com.fridgefairy.android.ui.adapters
 
 import android.view.LayoutInflater
@@ -43,7 +47,7 @@ class FoodItemAdapter(private val onItemClick: (FoodItem) -> Unit) :
             val expirationDate = Date(foodItem.expirationDate)
             expirationTextView.text = "Expires: ${dateFormat.format(expirationDate)}"
 
-            // Change color based on expiration status
+
             when {
                 foodItem.isExpired -> {
                     expirationTextView.setTextColor(

@@ -1,4 +1,5 @@
-// File: com/fridgefairy/android/data/Converters.kt
+//defines Room TypeConverters to allow Room to store complex types.
+//handles converting a List of Ingredient objects to and from a JSON String.
 package com.fridgefairy.android.data
 
 import androidx.room.TypeConverter

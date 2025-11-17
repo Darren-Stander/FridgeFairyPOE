@@ -29,7 +29,7 @@ class RecipeSearchActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private var currentUserId: String? = null
 
-    // ViewModel for recipe data
+
     private val recipeViewModel: RecipeViewModel by viewModels {
         RecipeViewModelFactory(
             RecipeRepository(
@@ -43,7 +43,7 @@ class RecipeSearchActivity : AppCompatActivity() {
         binding = ActivityRecipeSearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set up toolbar
+
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Recipe Search"
@@ -64,13 +64,13 @@ class RecipeSearchActivity : AppCompatActivity() {
         observeViewModel()
     }
 
-    // *** NEW: Add onResume to update the chip every time the screen is shown ***
+
     override fun onResume() {
         super.onResume()
         updateDietChip()
     }
 
-    // *** NEW: Function to show/hide the diet filter chip ***
+
     private fun updateDietChip() {
         val diet = SettingsHelper.getDietPreference(this)
         if (diet != null) {
@@ -79,7 +79,7 @@ class RecipeSearchActivity : AppCompatActivity() {
             }
             binding.chipDietFilter.visibility = View.VISIBLE
 
-            // Set a click listener to inform the user how to remove it
+
             binding.chipDietFilter.setOnCloseIconClickListener {
                 Toast.makeText(this, "To change your diet, go to Settings", Toast.LENGTH_LONG).show()
             }
@@ -89,10 +89,10 @@ class RecipeSearchActivity : AppCompatActivity() {
         }
     }
 
-    // Set up RecyclerView with adapter and layout manager
+
     private fun setupRecyclerView() {
         recipeAdapter = RecipeAdapter { recipe ->
-            // Launch RecipeDetailActivity with the recipe ID
+
             val intent = Intent(this, RecipeDetailActivity::class.java)
             intent.putExtra("RECIPE_ID", recipe.id)
             startActivity(intent)
@@ -104,7 +104,7 @@ class RecipeSearchActivity : AppCompatActivity() {
         }
     }
 
-    // Set up listener for search button
+
     private fun setupSearchListener() {
         binding.buttonSearchRecipes.setOnClickListener {
             val query = binding.editTextSearchQuery.text.toString().trim()
@@ -127,7 +127,7 @@ class RecipeSearchActivity : AppCompatActivity() {
         }
     }
 
-    // Observe ViewModel LiveData for updates
+
     private fun observeViewModel() {
         recipeViewModel.searchResults.observe(this) { recipes ->
             showLoading(false)
@@ -151,14 +151,14 @@ class RecipeSearchActivity : AppCompatActivity() {
         }
     }
 
-    // Show or hide loading indicator
+
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         binding.buttonSearchRecipes.isEnabled = !isLoading
         binding.editTextSearchQuery.isEnabled = !isLoading
     }
 
-    // Handle toolbar item selections
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             onBackPressedDispatcher.onBackPressed()

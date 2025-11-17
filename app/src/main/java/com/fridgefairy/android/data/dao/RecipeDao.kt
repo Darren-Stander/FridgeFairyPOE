@@ -1,3 +1,8 @@
+// defines the Data Access Object (DAO) for Recipe entities.
+// includes Room annotations for database operations like insert and queries
+// get all cached recipes or a specific recipe by its ID.
+
+
 package com.fridgefairy.android.data.dao
 
 import androidx.lifecycle.LiveData

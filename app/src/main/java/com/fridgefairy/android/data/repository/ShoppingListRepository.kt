@@ -1,3 +1,6 @@
+// defines the ShoppingListRepository class, which abstracts the data source for the shopping list.
+//  It provides a clean API for the ViewModel to interact with the ShoppingListDao (local Room database).
+
 package com.fridgefairy.android.data.repository
 
 import androidx.lifecycle.LiveData

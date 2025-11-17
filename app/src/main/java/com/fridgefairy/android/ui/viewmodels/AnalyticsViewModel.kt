@@ -1,3 +1,7 @@
+// This file defines the ViewModel for the AnalyticsActivity.
+// It calculates analytics (e.g., waste reduced, items consumed, category breakdown)
+// by fetching data from the FoodRepository and exposes the results as a StateFlow.
+
 package com.fridgefairy.android.ui.viewmodels
 
 import android.app.Application

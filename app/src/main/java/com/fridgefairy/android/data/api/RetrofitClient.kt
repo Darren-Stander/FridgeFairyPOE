@@ -1,3 +1,8 @@
+// provides a singleton object to configure and create the Retrofit instance.
+// It sets the base URL for the Spoonacular API
+// adds a logging interceptor for debugging, and initialises the RecipeApiService.
+
+
 package com.fridgefairy.android.data.api
 
 import okhttp3.OkHttpClient

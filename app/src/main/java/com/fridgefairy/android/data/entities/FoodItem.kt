@@ -1,3 +1,6 @@
+// defines the data class for the FoodItem entity, representing a table in the Room database.
+//includes properties for a food item and helper properties to check its expiration status.
+
 package com.fridgefairy.android.data.entities
 
 import androidx.room.Entity
@@ -8,7 +11,7 @@ import java.util.UUID
 data class FoodItem(
     @PrimaryKey
     val id: String = UUID.randomUUID().toString(),
-    val userId: String, // NEW: Associate with Firebase user
+    val userId: String,
     val name: String,
     val category: String,
     val expirationDate: Long,

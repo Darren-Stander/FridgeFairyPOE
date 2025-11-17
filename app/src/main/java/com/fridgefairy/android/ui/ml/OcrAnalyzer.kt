@@ -1,3 +1,7 @@
+// This file defines a CameraX ImageAnalysis.Analyzer for Optical Character Recognition (OCR).
+// It uses Google ML Kit's TextRecognition client to process camera frames
+// and returns the full recognized text block via a callback.
+
 package com.fridgefairy.android.ui.ml
 
 import androidx.camera.core.ExperimentalGetImage

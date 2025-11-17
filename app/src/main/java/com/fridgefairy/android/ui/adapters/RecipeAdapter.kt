@@ -1,3 +1,7 @@
+// This file defines the RecyclerView adapter for displaying Recipe objects.
+// It uses ListAdapter for efficient updates and binds Recipe data to the
+// item_recipe.xml layout, using Coil to load recipe images.
+
 package com.fridgefairy.android.ui.adapters
 
 import android.view.LayoutInflater

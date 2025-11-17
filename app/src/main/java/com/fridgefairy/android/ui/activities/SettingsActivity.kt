@@ -1,3 +1,7 @@
+// This file defines the SettingsActivity, where users manage app preferences.
+// It handles loading and saving settings like theme, language, notifications,
+// dietary preferences, and enabling/disabling biometric login.
+
 package com.fridgefairy.android.ui.activities
 
 import android.content.Context
@@ -168,18 +172,17 @@ class SettingsActivity : AppCompatActivity() {
                     Toast.makeText(this, BiometricHelper.getBiometricStatusMessage(this), Toast.LENGTH_LONG).show()
                 }
             } else {
-                // Just disable the flag, keep email and token so user can re-enable easily
+
                 BiometricHelper.setBiometricEnabled(this, false)
                 android.util.Log.d("SettingsActivity", "Biometric DISABLED - Flag set to false")
                 Toast.makeText(this, "Biometric login disabled", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // --- SIGN OUT BUTTON LISTENER ---
+
         binding.buttonLogout.setOnClickListener {
             mAuth.signOut()
-            // DO NOT clear biometric data - user should be able to use biometric to login again!
-            // Biometric data will only be cleared if a DIFFERENT user logs in
+
             Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show()
 
             val intent = Intent(this, AuthActivity::class.java).apply {
@@ -190,7 +193,7 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    // Saves selected intolerances to shared preferences
+
     private fun saveIntolerances() {
         val intolerances = mutableListOf<String>()
         if (binding.checkboxGluten.isChecked) intolerances.add("gluten")
@@ -202,7 +205,7 @@ class SettingsActivity : AppCompatActivity() {
         sharedPreferences.edit().putString(SettingsHelper.KEY_INTOLERANCES, intolerancesString).apply()
     }
 
-    // Applies the selected theme
+
     private fun applyTheme(themeIndex: Int) {
         val mode = when (themeIndex) {
             0 -> AppCompatDelegate.MODE_NIGHT_NO // Light mode
@@ -212,7 +215,6 @@ class SettingsActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(mode)
     }
 
-    // Apply Language Change
     private fun applyLanguage(languageCode: String) {
         val localeList = if (languageCode == "system") {
             LocaleListCompat.getEmptyLocaleList()
@@ -222,7 +224,7 @@ class SettingsActivity : AppCompatActivity() {
         AppCompatDelegate.setApplicationLocales(localeList)
     }
 
-    // Handles menu item selections
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {

@@ -1,3 +1,7 @@
+// defines a Retrofit API interface for interacting with the Spoonacular recipe API.
+// specifies the HTTP endpoints, methods (GET), and parameters for searching recipes
+// gets recipe details.
+
 package com.fridgefairy.android.data.api
 
 import com.fridgefairy.android.data.entities.Recipe

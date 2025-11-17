@@ -1,3 +1,7 @@
+// This file defines the RecyclerView adapter for displaying ShoppingListItem objects.
+// It uses ListAdapter for efficient updates, binds data to the item_shopping_list.xml layout,
+// and handles checkbox state changes and applying strikethrough text.
+
 package com.fridgefairy.android.ui.adapters
 
 import android.graphics.Paint
@@ -44,7 +48,7 @@ class ShoppingListAdapter(
             categoryTextView.text = item.category
             checkBox.isChecked = item.isPurchased
 
-            // Strike through if purchased
+
             if (item.isPurchased) {
                 nameTextView.paintFlags = nameTextView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 quantityTextView.paintFlags = quantityTextView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG

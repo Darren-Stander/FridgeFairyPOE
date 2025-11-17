@@ -1,3 +1,7 @@
+// defines the Data Access Object (DAO) for ShoppingListItem entities.
+// includes Room annotations for database operations like insert, update, delete
+// queries to get all items or clear items marked as purchased.
+
 package com.fridgefairy.android.data.dao
 
 import androidx.lifecycle.LiveData

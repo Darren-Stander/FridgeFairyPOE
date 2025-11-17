@@ -1,3 +1,9 @@
+
+
+// This file provides a helper object for retrieving user settings from SharedPreferences.
+// It offers simple functions to get the currently selected diet and intolerance
+// preferences for use in API calls.
+
 package com.fridgefairy.android.utils
 
 import android.content.Context
@@ -7,7 +13,7 @@ object SettingsHelper {
 
     private const val PREFS_NAME = "FridgeFairyPrefs"
 
-    // *** FIX: Removed "private" from these two lines ***
+
     const val KEY_DIET = "diet_preference"
     const val KEY_INTOLERANCES = "intolerances"
 
@@ -15,9 +21,7 @@ object SettingsHelper {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
 
-    /**
-     * Retrieves the diet preference as a string
-     */
+
     fun getDietPreference(context: Context): String? {
         val prefs = getSharedPreferences(context)
         val dietIndex = prefs.getInt(KEY_DIET, 0)
@@ -30,9 +34,7 @@ object SettingsHelper {
         }
     }
 
-    /**
-     * Retrieves the intolerances as a comma-separated string
-     */
+
     fun getIntolerances(context: Context): String? {
         val prefs = getSharedPreferences(context)
         val intolerances = prefs.getString(KEY_INTOLERANCES, "")

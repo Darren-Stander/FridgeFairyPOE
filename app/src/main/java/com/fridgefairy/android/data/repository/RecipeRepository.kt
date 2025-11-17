@@ -1,3 +1,8 @@
+// defines the RecipeRepository class, abstracting data sources for recipes.
+// fetches recipe data from the RecipeApiService (remote)
+// caches itin the RecipeDao (local Room database), associating recipes with the current user.
+
+
 package com.fridgefairy.android.data.repository
 
 import android.util.Log
@@ -13,11 +18,11 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
 
     private val recipeApiService: RecipeApiService = RetrofitClient.recipeApiService
 
-    // 👇 ADD THIS PROPERTY TO FETCH CURRENT USER ID
+
     private val currentUserId: String
         get() = FirebaseAuth.getInstance().currentUser?.uid ?: "unknown_user"
 
-    // Fetch all recipes for this user (you can modify DAO if you want per-user filtering)
+
     val allRecipes: LiveData<List<Recipe>> = recipeDao.getAllRecipes()
 
     suspend fun insert(recipe: Recipe) {

@@ -1,8 +1,9 @@
+// defines a data class to hold statistics for the Analytics Dashboard.
+// structures the data needed for stat cards and charts.
+
 package com.fridgefairy.android.data.models
 
-/**
- * Data class for Analytics Dashboard statistics
- */
+
 data class Analytics(
     val moneySaved: Double = 0.0,
     val wasteKg: Double = 0.0,

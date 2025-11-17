@@ -23,7 +23,7 @@ class RecipeDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecipeDetailBinding
     private var recipeId: Int = -1
 
-    // ViewModel for recipe data
+
     private val recipeViewModel: RecipeViewModel by viewModels {
         RecipeViewModelFactory(
             RecipeRepository(
@@ -37,12 +37,12 @@ class RecipeDetailActivity : AppCompatActivity() {
         binding = ActivityRecipeDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set up toolbar
+
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Recipe Details"
 
-        // Get recipe ID from intent
+
         recipeId = intent.getIntExtra("RECIPE_ID", -1)
 
         if (recipeId == -1) {
@@ -54,7 +54,7 @@ class RecipeDetailActivity : AppCompatActivity() {
         loadRecipeDetails()
     }
 
-    // Loads recipe details and updates UI
+
     private fun loadRecipeDetails() {
         lifecycleScope.launch {
             val recipe = recipeViewModel.getRecipeById(recipeId)
@@ -65,7 +65,7 @@ class RecipeDetailActivity : AppCompatActivity() {
                 return@launch
             }
 
-            // Load image
+
             recipe.image?.let {
                 binding.imageRecipe.load(it) {
                     crossfade(true)
@@ -73,18 +73,18 @@ class RecipeDetailActivity : AppCompatActivity() {
                 }
             }
 
-            // Set title
+
             binding.textRecipeTitle.text = recipe.title
 
-            // Set metadata
+
             binding.textReadyInMinutes.text = "Ready in: ${recipe.readyInMinutes} minutes"
             binding.textServings.text = "Servings: ${recipe.servings}"
 
-            // Set summary (strip HTML tags)
+
             val cleanSummary = recipe.summary.replace(Regex("<[^>]*>"), "")
             binding.textSummary.text = cleanSummary
 
-            // Set ingredients
+
             if (recipe.ingredients.isNotEmpty()) {
                 val ingredientsList = recipe.ingredients.joinToString("\n") { ingredient ->
                     "• ${ingredient.amount} ${ingredient.unit} ${ingredient.name}"
@@ -94,7 +94,7 @@ class RecipeDetailActivity : AppCompatActivity() {
                 binding.textIngredients.text = "No ingredients available"
             }
 
-            // Set instructions
+
             if (recipe.instructions.isNotBlank()) {
                 val cleanInstructions = recipe.instructions.replace(Regex("<[^>]*>"), "")
                 binding.textInstructions.text = cleanInstructions
@@ -102,7 +102,7 @@ class RecipeDetailActivity : AppCompatActivity() {
                 binding.textInstructions.text = "No instructions available"
             }
 
-            // Source URL button
+
             binding.buttonViewSource.setOnClickListener {
                 recipe.sourceUrl?.let { url ->
                     val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(url))
@@ -112,7 +112,7 @@ class RecipeDetailActivity : AppCompatActivity() {
         }
     }
 
-    // Handle toolbar back button
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             onBackPressedDispatcher.onBackPressed()

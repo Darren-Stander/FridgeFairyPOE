@@ -1,3 +1,7 @@
+// defines the AnalyticsActivity, which displays the analytics dashboard.
+// sets up and populates various charts (Line, Pie, Bar) using MPAndroidChart
+// observes data from the AnalyticsViewModel.
+
 package com.fridgefairy.android.ui.activities
 
 import android.graphics.Color
@@ -19,10 +23,6 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import kotlinx.coroutines.launch
 
-/**
- * Analytics Dashboard Activity
- * ADDITIONAL FEATURE: Shows money saved, waste reduced, and usage charts
- */
 class AnalyticsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAnalyticsBinding

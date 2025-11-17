@@ -1,3 +1,6 @@
+// defines the data class for the ShoppingListItem entity, representing a table in the Room database.
+//  holds information about an item on the user's shopping list.
+
 package com.fridgefairy.android.data.entities
 
 import androidx.room.Entity

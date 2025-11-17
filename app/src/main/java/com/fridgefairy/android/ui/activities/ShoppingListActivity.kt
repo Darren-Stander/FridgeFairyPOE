@@ -1,3 +1,7 @@
+// This file defines the ShoppingListActivity, which displays the user's shopping list.
+// It observes the ShoppingListViewModel to show items, and handles adding,
+// deleting, checking items, and launching the receipt scanner.
+
 package com.fridgefairy.android.ui.activities
 
 import android.app.Activity
