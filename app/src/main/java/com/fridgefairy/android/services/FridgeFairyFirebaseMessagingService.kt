@@ -52,7 +52,7 @@ class FridgeFairyFirebaseMessagingService : FirebaseMessagingService() {
         super.onNewToken(token)
         Log.d(TAG, "New FCM token: $token")
 
-        // TODO: Send token to your app server or save to Firestore
+
         sendTokenToServer(token)
     }
 
@@ -74,7 +74,8 @@ class FridgeFairyFirebaseMessagingService : FirebaseMessagingService() {
             sendNotification(
                 title = it.title ?: "FridgeFairy",
                 body = it.body ?: "",
-                type = message.data["type"] ?: "general"
+                type = message.data["type"] ?: "general",
+                itemId = message.data["itemId"]
             )
         }
     }
@@ -86,37 +87,13 @@ class FridgeFairyFirebaseMessagingService : FirebaseMessagingService() {
         val body = data["body"] ?: ""
         val itemId = data["itemId"]
 
-        when (type) {
-            "expiring_item" -> {
-                sendNotification(
-                    title = title,
-                    body = body,
-                    type = "expiring_item",
-                    itemId = itemId
-                )
-            }
-            "low_stock" -> {
-                sendNotification(
-                    title = title,
-                    body = body,
-                    type = "general"
-                )
-            }
-            "recipe_suggestion" -> {
-                sendNotification(
-                    title = title,
-                    body = body,
-                    type = "general"
-                )
-            }
-            else -> {
-                sendNotification(
-                    title = title,
-                    body = body,
-                    type = "general"
-                )
-            }
-        }
+
+        sendNotification(
+            title = title,
+            body = body,
+            type = type,
+            itemId = itemId
+        )
     }
 
 
@@ -185,15 +162,16 @@ class FridgeFairyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         val notificationId = if (type == "expiring_item") {
-            NOTIFICATION_ID_EXPIRY
+
+            itemId?.hashCode() ?: System.currentTimeMillis().toInt()
         } else {
-            NOTIFICATION_ID_GENERAL
+            System.currentTimeMillis().toInt()
         }
 
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.ic_fridge) // Use your app icon
+            .setSmallIcon(R.drawable.ic_fridge) // Make sure ic_fridge exists in drawables
             .setContentTitle(title)
             .setContentText(body)
             .setAutoCancel(true)
@@ -214,7 +192,8 @@ class FridgeFairyFirebaseMessagingService : FirebaseMessagingService() {
             }
             val consumePendingIntent = PendingIntent.getActivity(
                 this,
-                1,
+                // Use a unique request code for the action pending intent
+                itemId.hashCode() + 1,
                 consumeIntent,
                 PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
             )
@@ -239,8 +218,6 @@ class FridgeFairyFirebaseMessagingService : FirebaseMessagingService() {
 
             val prefs = getSharedPreferences("fcm_prefs", Context.MODE_PRIVATE)
             prefs.edit().putString("fcm_token", token).apply()
-
-
 
 
             val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -268,12 +245,12 @@ class FridgeFairyFirebaseMessagingService : FirebaseMessagingService() {
                 Log.w(TAG, "User not logged in, cannot save FCM token to Firestore yet.")
             }
 
-
             Log.d(TAG, "FCM token saved locally")
         } catch (e: Exception) {
             Log.e(TAG, "Error saving FCM token", e)
         }
     }
+
 
     fun getCurrentToken(context: Context): String? {
         val prefs = context.getSharedPreferences("fcm_prefs", Context.MODE_PRIVATE)

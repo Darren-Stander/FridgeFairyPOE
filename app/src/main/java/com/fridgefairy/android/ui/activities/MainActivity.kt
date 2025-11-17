@@ -4,14 +4,20 @@
 
 package com.fridgefairy.android.ui.activities
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -45,6 +51,23 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            Log.d("MainActivity", "Notification permission granted.")
+        } else {
+            Log.w("MainActivity", "Notification permission denied.")
+            // You could show a snackbar here explaining why notifications are useful
+            Snackbar.make(
+                binding.root,
+                "Please enable notifications in settings to get expiry alerts.",
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -71,6 +94,18 @@ class MainActivity : AppCompatActivity() {
         setupClickListeners()
         observeData()
         setupSwipeToDelete()
+
+
+        askForNotificationPermission()
+        handleNotificationIntent(intent)
+    }
+
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        setIntent(intent)
+        handleNotificationIntent(intent)
     }
 
 
@@ -185,6 +220,46 @@ class MainActivity : AppCompatActivity() {
 
         itemTouchHelper.attachToRecyclerView(binding.content.recyclerViewFoodItems)
     }
+
+
+    private fun askForNotificationPermission() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) !=
+                PackageManager.PERMISSION_GRANTED
+            ) {
+
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
+
+
+    private fun handleNotificationIntent(intent: Intent?) {
+        if (intent?.action == "ACTION_CONSUME_ITEM") {
+            val itemId = intent.getStringExtra("itemId")
+            if (itemId != null) {
+
+                viewModel.allFoodItems.observe(this) { foodItems ->
+                    if (foodItems.isNullOrEmpty()) return@observe
+
+                    val itemToConsume = foodItems.find { it.id == itemId }
+
+                    if (itemToConsume != null) {
+
+                        viewModel.delete(itemToConsume)
+                        Snackbar.make(binding.root, "${itemToConsume.name} marked as used.", Snackbar.LENGTH_LONG).show()
+
+
+                        getIntent().action = ""
+                    } else {
+                        Log.w("MainActivity", "Could not find item $itemId to consume.")
+                    }
+                }
+            }
+        }
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
