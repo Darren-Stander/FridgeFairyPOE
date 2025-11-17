@@ -278,9 +278,29 @@ This project includes automated tests to ensure core functionality works as expe
 *   **IDE:** Android Studio
 *   **CI/CD:** GitHub Actions
 
-## Signed APK Images
-   
 
+## Signed APK Images
+
+### Creating the signed APK
+<img width="1914" height="1032" alt="Screenshot 2025-11-17 222252" src="https://github.com/user-attachments/assets/3b36ae0c-daf6-4156-bfc0-4cc30fc1339b" />
+
+
+### Signed APK successfully Generated
+<img width="357" height="188" alt="Screenshot 2025-11-17 223309" src="https://github.com/user-attachments/assets/9492b4dc-5134-449a-a1a3-1915e8bbdebe" />
+
+
+### App-Release.apk location
+<img width="1919" height="1030" alt="Screenshot 2025-11-17 223353" src="https://github.com/user-attachments/assets/160a1770-7a27-42c9-8512-e52094bc028b" />
+
+
+### What App-Release.apk looks like when its opened in Android studio
+<img width="1919" height="1030" alt="Screenshot 2025-11-17 223729" src="https://github.com/user-attachments/assets/8e079291-2f0f-471f-858c-40f97dd146f4" />
+
+
+### In build.gradle.kts buildTypes{}
+<img width="1919" height="1031" alt="Screenshot 2025-11-17 223956" src="https://github.com/user-attachments/assets/de97b54a-d6bb-46a9-86de-530a8d7b60dd" />
+
+---
 # References
 
 ## Darren Stander (ST10209886)
@@ -306,6 +326,7 @@ This project includes automated tests to ensure core functionality works as expe
 *    https://www.youtube.com/watch?v=QqQ83qK6_rk
 *    https://www.youtube.com/watch?v=_dCRQ9wta-I
 *    https://www.youtube.com/watch?v=tXHWyt8g5jc
+*    https://www.youtube.com/watch?v=wLJhXid0NiA&t=44s
 
   ### DeepSeek
 
