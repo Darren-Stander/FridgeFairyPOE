@@ -266,6 +266,11 @@ This project includes automated tests to ensure core functionality works as expe
       
     <img width="1762" height="601" alt="Screenshot 2025-10-06 090803" src="https://github.com/user-attachments/assets/6a17ab44-00b1-4ca1-8fff-50d7f9cc40bd" />
 
+    #### The tests for Part
+    
+    <img width="1915" height="906" alt="Screenshot 2025-11-17 173144" src="https://github.com/user-attachments/assets/b77988e5-791c-4eab-8df6-50b6876bc766" />
+
+
 
 ## Technologies Used
 
@@ -314,27 +319,30 @@ This project includes automated tests to ensure core functionality works as expe
 ### Claude sonnet 4.5
 
 *    https://claude.ai/share/faf79f4a-662c-4604-85c4-5b183a067e1c
-  
+*    https://claude.ai/share/332c9827-aa9d-4a8d-9bcc-41592919f292  
 *    https://claude.ai/share/640f1606-6172-4c18-892e-f957e440c88f
-  
+*    https://claude.ai/share/24ef7d33-f3a1-4d72-b148-ed4816ca4c7f 
 *    https://claude.ai/share/d42f5b8f-4dc9-4c78-8a67-825686779ab4
+*    https://claude.ai/share/1f1c797e-0fb3-41b7-b92d-10f58be3bf76
 
 ### ChatGPT 5
 
 * https://chatgpt.com/share/68e42724-4cc8-8012-a3dc-c90c740c48a9
-  
+* https://claude.ai/share/332c9827-aa9d-4a8d-9bcc-41592919f292
 * https://chatgpt.com/share/68e42823-08dc-8012-80cc-e403d8a5913d
 
 
  ### YT Videos 
 
  *  https://www.youtube.com/watch?v=M3gYcPF51QY
-   
+ *  https://youtu.be/hrWPljQhEF0?si=8E5yZlqpFXM45bYN  
  *  https://www.youtube.com/watch?v=lwAvI3WDXBY&list=PLSrm9z4zp4mEPOfZNV9O-crOhoMa0G2-o
-   
+ *  https://www.youtube.com/watch?v=x5v-tyXmsGo  
  *  https://www.youtube.com/watch?v=3USvr1Lz8g8&list=PLSrm9z4zp4mEPOfZNV9O-crOhoMa0G2-o&index=3
-   
+ *  https://www.youtube.com/watch?v=tw0YQFkfm78 
  *  https://www.youtube.com/watch?v=rn53Roy-HgE&list=PLSrm9z4zp4mEPOfZNV9O-crOhoMa0G2-o&index=8
+ *  https://www.youtube.com/watch?v=jaZ2gLMGUsM
+ *  https://www.youtube.com/watch?v=E0eLKqGgr_4
    
 
 ## AI Write up
