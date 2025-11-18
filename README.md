@@ -6,7 +6,8 @@
 A mobile budgeting application designed to help users reach financial goals, track expenditure, and make informed financial decisions through an interactive, gamified experience.
 
 ## Link to YouTube Video
-https://youtu.be/G3L8bU_WCc8
+* Demonstration video of Fridge Fairy - https://youtu.be/nAdNYsx_0Oo
+* Showing the Biometrics functionality of FridgeFairy - https://youtube.com/shorts/zXY52c-mes4
 
 ## Purpose of the App
 
