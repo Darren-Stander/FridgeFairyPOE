@@ -7,7 +7,7 @@ A mobile budgeting application designed to help users reach financial goals, tra
 
 ## Link to YouTube Video
 * Demonstration video of Fridge Fairy - https://youtu.be/nAdNYsx_0Oo
-* Showing the Biometrics functionality of FridgeFairy - https://youtube.com/shorts/zXY52c-mes4
+* Showing the Biometrics functionality of FridgeFairy - https://youtube.com/shorts/SGAxn2AFqIs
 
 ## Purpose of the App
 
